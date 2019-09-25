@@ -1,11 +1,7 @@
 package com.example.recipes.app.main;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.example.recipes.BaseActivity;
 import com.example.recipes.R;
@@ -24,13 +20,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public class GetListAsyncTask extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... voids) {
-            AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-                    AppDatabase.class, "recipe_db").build();
-            List<Area> all = db.getAreaDao().getAll();
-            String recipe_db = getApplicationContext().getDatabasePath("recipe_db").getAbsolutePath();
+            AppDatabase db = AppDatabase.getInstance(MainActivity.this);
             return null;
         }
     }

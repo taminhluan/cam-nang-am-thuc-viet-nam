@@ -13,4 +13,10 @@
     <string name="event">Dịp lễ</string>
     <string name="category">Danh mục</string>
     <string name="areas">Vùng miền</string>
+    <string name="placeholder_category_name">Ten danh muc</string>
+    <string name="placeholder_area_name">Ten vung mien</string>
+    <string name="placeholder_event_name">Ten dip le</string>
+    <string name="placeholder_detail">Chi tiết</string>
+    <string name="placeholder_ingredients">Danh sách nguyên liệu</string>
+    <string name="image">image</string>
 </resources>

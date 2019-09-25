@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recipes.R;
+import com.example.recipes.model.Area;
 
-public class AreaFragment extends Fragment {
+import java.util.List;
+
+public class AreaFragment extends Fragment implements IAreaFragment {
 
 
     public AreaFragment() {
@@ -29,4 +32,13 @@ public class AreaFragment extends Fragment {
         return inflater.inflate(R.layout.area_frag, container, false);
     }
 
+    @Override
+    public void onGetList() {
+        //TODO: on Get List
+    }
+
+    @Override
+    public void onDisplayList(List<Area> areas) {
+        //TODO: on display list
+    }
 }

@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.recipes.R;
+import com.example.recipes.model.Event;
 
-public class EventFragment extends Fragment {
+import java.util.List;
+
+public class EventFragment extends Fragment implements IEventFragment {
 
     public static EventFragment newInstance() {
         return new EventFragment();
@@ -24,4 +27,13 @@ public class EventFragment extends Fragment {
         return inflater.inflate(R.layout.event_frag, container, false);
     }
 
+    @Override
+    public void onGetList() {
+        //TODO: on get list
+    }
+
+    @Override
+    public void onDisplayList(List<Event> events) {
+        //TODO: on display list
+    }
 }
