@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Recipes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="username">Tài khoản</string>
+    <string name="password">Mật khẩu</string>
+    <string name="back">Quay lại</string>
+    <string name="login">Đăng nhập</string>
+    <string name="recipe">Công thức</string>
+    <string name="more">Xem thêm...</string>
+    <string name="event">Dịp lễ</string>
+    <string name="category">Danh mục</string>
+    <string name="areas">Vùng miền</string>
 </resources>

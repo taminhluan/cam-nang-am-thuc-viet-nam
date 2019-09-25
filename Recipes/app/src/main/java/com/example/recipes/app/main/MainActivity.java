@@ -1,4 +1,4 @@
-package com.example.recipes;
+package com.example.recipes.app.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
@@ -7,12 +7,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.recipes.BaseActivity;
+import com.example.recipes.R;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
