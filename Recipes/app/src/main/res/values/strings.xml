@@ -19,4 +19,11 @@
     <string name="placeholder_detail">Chi tiết</string>
     <string name="placeholder_ingredients">Danh sách nguyên liệu</string>
     <string name="image">image</string>
+    <string name="application">Ứng dụng</string>
+    <string name="about">Về ứng dụng</string>
+    <string name="other">Khác</string>
+    <string name="drawer_open">Mở</string>
+    <string name="drawer_close">Đóng</string>
+    <string name="about_dialog">Về ứng dụng</string>
+    <string name="dialog_ok">OK</string>
 </resources>

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(foreignKeys = {
@@ -40,8 +41,13 @@ public class Recipe {
     private int categoryId;
 
     //fields obtain by code
+    @Ignore
     private Area area;
+
+    @Ignore
     private Event event;
+
+    @Ignore
     private Category category;
     //end fields obtain by code
 
