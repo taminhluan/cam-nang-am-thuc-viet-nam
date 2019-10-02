@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        >
         <activity android:name=".app.recipe.RecipeActivity">
 
         </activity>
@@ -22,11 +23,16 @@
             android:name=".admin.dashboard.DashboardActivity"
             android:label="@string/title_activity_dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".app.recipe_detail.RecipeDetailActivity" />
-        <activity android:name=".app.area.AreaActivity" />
-        <activity android:name=".app.event.EventActivity" />
-        <activity android:name=".app.category.CategoryActivity" />
-        <activity android:name=".app.login.LoginActivity" />
+        <activity android:name=".app.recipe_detail.RecipeDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".app.area.AreaActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".app.event.EventActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".app.category.CategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".app.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".app.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

@@ -19,6 +19,7 @@ import com.example.recipes.app.about.AboutDialogFragment;
 import com.example.recipes.app.area.AreaActivity;
 import com.example.recipes.app.category.CategoryActivity;
 import com.example.recipes.app.event.EventActivity;
+import com.example.recipes.app.main.MainActivity;
 
 public class DrawerFragment extends Fragment implements View.OnClickListener {
     private ActionBarDrawerToggle mDrawerToggle;
@@ -28,6 +29,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mMenuArea;
     private LinearLayout mMenuEvent;
     private LinearLayout mMenuAbout;
+    private LinearLayout mMenuHome;
 
     public DrawerFragment() {
         // Required empty public constructor
@@ -59,11 +61,13 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         mMenuArea = view.findViewById(R.id.menuArea);
         mMenuEvent = view.findViewById(R.id.menuEvent);
         mMenuAbout = view.findViewById(R.id.menuAbout);
+        mMenuHome = view.findViewById(R.id.menuHome);
 
         mMenuCategory.setOnClickListener(this);
         mMenuArea.setOnClickListener(this);
         mMenuEvent.setOnClickListener(this);
         mMenuAbout.setOnClickListener(this);
+        mMenuHome.setOnClickListener(this);
     }
 
     public void setUpDrawer(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
@@ -103,6 +107,10 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
+            case R.id.menuHome:
+                intent = new Intent(this.getActivity(), MainActivity.class);
+                startActivity(intent);
+                break;
             case R.id.menuCategory:
                 intent = new Intent(this.getActivity(), CategoryActivity.class);
                 startActivity(intent);

@@ -10,7 +10,7 @@
         android:id="@+id/nav_header_container"
         android:layout_width="match_parent"
         android:layout_height="230dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/white">
 
         <ImageView
             android:contentDescription="@string/image"
@@ -18,7 +18,7 @@
             android:layout_height="100dp"
             android:layout_centerInParent="true"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/recipes"/>
 
     </RelativeLayout>
     <LinearLayout
@@ -36,6 +36,35 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/menuHome"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/baseline_category_24"
+                android:tint="@color/colorAccent"
+                android:contentDescription="@string/image" />
+
+            <TextView
+                android:text="@string/home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/menuCategory"

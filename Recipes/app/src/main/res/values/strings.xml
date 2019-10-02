@@ -25,5 +25,7 @@
     <string name="drawer_open">Mở</string>
     <string name="drawer_close">Đóng</string>
     <string name="about_dialog">Về ứng dụng</string>
+    <string name="about_content">Việt Nam có rất nhiều món ăn truyền thống, đặc biệt do địa lý trả dài nên ẩm thực Việt Nam có sự đa dạng. Và không phải người dân nào cũng có thể biết hết được các món ăn truyền thống của dân tộc mình. Vì vậy, một ứng dụng di động cho phép người dùng có thể tra cứu về các món ăn truyền thống có ý nghĩa thực tiễn rất cao. Các món ăn được chia theo miền, theo thời điểm được sử dụng (thường ngày, ngày Lễ tết, …).</string>
     <string name="dialog_ok">OK</string>
+    <string name="home">Cẩm nang ẩm thực</string>
 </resources>
