@@ -197,5 +197,33 @@
                 android:textColor="@android:color/black"
                 android:textSize="14sp"/>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/menuAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/baseline_info_24"
+                android:tint="@color/colorAccent"
+                android:contentDescription="@string/image" />
+
+            <TextView
+                android:text="@string/admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

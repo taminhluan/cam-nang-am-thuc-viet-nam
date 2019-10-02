@@ -36,13 +36,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setupFragment() {
-        MainFragment aboutFragment =
+        MainFragment fragment =
                 (MainFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (aboutFragment == null) {
+        if (fragment == null) {
             // Create the fragment
-            aboutFragment = MainFragment.newInstance();
+            fragment = MainFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), aboutFragment, R.id.contentFrame);
+                    getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
     }
 
