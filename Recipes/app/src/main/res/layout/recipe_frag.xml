@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".app.recipe.RecipeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/full"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@drawable/hint_recipe"/>
 
 </FrameLayout>
