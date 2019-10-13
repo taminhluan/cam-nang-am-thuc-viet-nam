@@ -2,6 +2,9 @@ package com.example.recipes.admin.dashboard;
 
 import android.os.Bundle;
 
+import com.example.recipes.admin.AdminActivity;
+import com.example.recipes.app.area.AreaFragment;
+import com.example.recipes.util.ActivityUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -12,23 +15,35 @@ import android.view.View;
 
 import com.example.recipes.R;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AdminActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_act);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setupToolbar();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        setupDrawer();
+
+        setupFragment();
+    }
+
+    private void setupToolbar() {
+        // Load toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.admin);
+        setSupportActionBar(toolbar);
+    }
+
+    private void setupFragment() {
+        DashboardFragment fragment =
+                (DashboardFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (fragment == null) {
+            // Create the fragment
+            fragment = DashboardFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(
+                    getSupportFragmentManager(), fragment, R.id.contentFrame);
+        }
     }
 
 }

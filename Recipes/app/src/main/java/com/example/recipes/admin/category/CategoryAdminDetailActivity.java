@@ -4,18 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.recipes.R;
 import com.example.recipes.admin.AdminActivity;
-import com.example.recipes.app.area.AreaFragment;
 import com.example.recipes.util.ActivityUtils;
 
-public class CategoryAdminActivity extends AdminActivity {
+public class CategoryAdminDetailActivity extends AdminActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.category_admin_act);
+        setContentView(R.layout.category_admin_detail_act);
 
         setupToolbar();
 

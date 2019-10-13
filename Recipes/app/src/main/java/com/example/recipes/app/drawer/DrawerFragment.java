@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.recipes.R;
+import com.example.recipes.admin.dashboard.DashboardActivity;
 import com.example.recipes.app.about.AboutDialogFragment;
 import com.example.recipes.app.area.AreaActivity;
 import com.example.recipes.app.category.CategoryActivity;
@@ -30,6 +31,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mMenuEvent;
     private LinearLayout mMenuAbout;
     private LinearLayout mMenuHome;
+    private LinearLayout mMenuAdmin;
 
     public DrawerFragment() {
         // Required empty public constructor
@@ -62,12 +64,14 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         mMenuEvent = view.findViewById(R.id.menuEvent);
         mMenuAbout = view.findViewById(R.id.menuAbout);
         mMenuHome = view.findViewById(R.id.menuHome);
+        mMenuAdmin = view.findViewById(R.id.menuAdmin);
 
         mMenuCategory.setOnClickListener(this);
         mMenuArea.setOnClickListener(this);
         mMenuEvent.setOnClickListener(this);
         mMenuAbout.setOnClickListener(this);
         mMenuHome.setOnClickListener(this);
+        mMenuAdmin.setOnClickListener(this);
     }
 
     public void setUpDrawer(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
@@ -121,6 +125,10 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.menuEvent:
                 intent = new Intent(this.getActivity(), EventActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menuAdmin:
+                intent = new Intent(this.getActivity(), DashboardActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menuAbout:

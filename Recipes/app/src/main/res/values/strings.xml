@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Cẩm nang ẩm thực</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="username">Tài khoản</string>
@@ -29,4 +28,5 @@
     <string name="dialog_ok">OK</string>
     <string name="home">Cẩm nang ẩm thực</string>
     <string name="admin">Quản trị</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

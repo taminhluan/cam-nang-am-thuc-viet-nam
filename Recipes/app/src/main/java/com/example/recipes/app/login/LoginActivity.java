@@ -13,6 +13,7 @@ import com.example.recipes.R;
 import com.example.recipes.admin.dashboard.DashboardActivity;
 import com.example.recipes.db.service.UserService;
 import com.example.recipes.db.service.UserServiceImpl;
+import com.example.recipes.util.Global;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, ILoginActivity {
 
@@ -57,6 +58,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onLoginSuccess() {
+        Global.Logged = true;
         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
         startActivity(intent);
         finish();

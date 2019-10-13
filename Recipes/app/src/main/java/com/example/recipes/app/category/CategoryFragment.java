@@ -44,6 +44,9 @@ public class CategoryFragment extends Fragment implements ICategoryFragment, Vie
     private void mapping(View view) {
         mFull = view.findViewById(R.id.full);
         mFull.setOnClickListener(this);
+
+        //TODO: display list
+//        recyclerViewProductOfferImages.setLayoutManager(new GridLayoutManager(this, 3));
     }
 
     @Override
