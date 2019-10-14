@@ -14,10 +14,22 @@ import com.example.recipes.R;
 import com.example.recipes.model.Recipe;
 
 public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAdminDetailFragment {
-
+    private Recipe mRecipe;
 
     public RecipeAdminDetailFragment() {
         // Required empty public constructor
+    }
+
+    public RecipeAdminDetailFragment(Recipe recipe) {
+        mRecipe = recipe;
+    }
+
+    public static RecipeAdminDetailFragment newInstance() {
+        return new RecipeAdminDetailFragment();
+    }
+
+    public static RecipeAdminDetailFragment newInstance(Recipe recipe) {
+        return new RecipeAdminDetailFragment(recipe);
     }
 
 
@@ -25,7 +37,19 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.recipe_admin_detail_frag, container, false);
+        View inflate = inflater.inflate(R.layout.recipe_admin_detail_frag, container, false);
+        mapping(inflate);
+        return inflate;
+    }
+
+    private void mapping(View view) {
+
+
+    }
+
+    @Override
+    public void display(Recipe recipe) {
+        //TODO display recipe
     }
 
     @Override

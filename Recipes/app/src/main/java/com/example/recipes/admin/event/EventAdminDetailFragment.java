@@ -24,11 +24,11 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
         mEvent = event;
     }
 
-    public EventAdminDetailFragment newInstance() {
+    public static EventAdminDetailFragment newInstance() {
         return new EventAdminDetailFragment();
     }
 
-    public EventAdminDetailFragment newInstance(Event event) {
+    public static EventAdminDetailFragment newInstance(Event event) {
         return new EventAdminDetailFragment(event);
     }
 

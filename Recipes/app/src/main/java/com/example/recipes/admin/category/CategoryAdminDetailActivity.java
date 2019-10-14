@@ -32,11 +32,11 @@ public class CategoryAdminDetailActivity extends AdminActivity{
     }
 
     private void setupFragment() {
-        CategoryAdminFragment fragment =
-                (CategoryAdminFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        CategoryAdminDetailFragment fragment =
+                (CategoryAdminDetailFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (fragment == null) {
             // Create the fragment
-            fragment = CategoryAdminFragment.newInstance();
+            fragment = CategoryAdminDetailFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), fragment, R.id.contentFrame);
         }

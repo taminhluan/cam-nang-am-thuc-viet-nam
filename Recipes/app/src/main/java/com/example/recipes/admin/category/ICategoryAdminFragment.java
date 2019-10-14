@@ -5,6 +5,8 @@ import com.example.recipes.model.Category;
 import java.util.List;
 
 public interface ICategoryAdminFragment {
+    void getList();
+
     void goToAddCategoryFragment();
 
     void displayList(List<Category> categories);

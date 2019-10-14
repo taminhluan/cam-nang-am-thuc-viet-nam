@@ -24,6 +24,13 @@ public class CategoryAdminDetailFragment extends BaseFragment implements ICatego
         mCategory = category;
     }
 
+    public static CategoryAdminDetailFragment newInstance() {
+        return new CategoryAdminDetailFragment();
+    }
+
+    public static CategoryAdminDetailFragment newInstance(Category category) {
+        return new CategoryAdminDetailFragment(category);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

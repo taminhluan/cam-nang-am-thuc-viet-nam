@@ -48,7 +48,8 @@ public class CategoryAdminFragment extends BaseFragment implements View.OnClickL
         return inflate;
     }
 
-    private void getList() {
+    @Override
+    public void getList() {
         new GetListAsyncTask().execute();
     }
 

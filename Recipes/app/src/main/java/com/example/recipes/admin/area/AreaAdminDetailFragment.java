@@ -24,11 +24,11 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
         mArea = area;
     }
 
-    public AreaAdminDetailFragment newInstance() {
+    public static AreaAdminDetailFragment newInstance() {
         return new AreaAdminDetailFragment();
     }
 
-    public AreaAdminDetailFragment newInstance(Area area) {
+    public static AreaAdminDetailFragment newInstance(Area area) {
         return new AreaAdminDetailFragment(area);
     }
 
