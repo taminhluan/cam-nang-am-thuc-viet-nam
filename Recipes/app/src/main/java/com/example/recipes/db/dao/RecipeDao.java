@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.recipes.model.Recipe;
 
@@ -22,6 +23,9 @@ public interface RecipeDao {
 
     @Insert
     void insertAll(Recipe... recipes);
+
+    @Update
+    void updateAll(Recipe... recipes);
 
     @Delete
     void delete(Recipe recipe);

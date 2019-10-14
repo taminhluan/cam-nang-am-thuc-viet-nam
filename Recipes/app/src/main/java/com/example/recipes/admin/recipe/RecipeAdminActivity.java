@@ -1,17 +1,13 @@
 package com.example.recipes.admin.recipe;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-
 import com.example.recipes.R;
 import com.example.recipes.admin.AdminActivity;
-import com.example.recipes.app.area.AreaFragment;
 import com.example.recipes.util.ActivityUtils;
 
 public class RecipeAdminActivity extends AdminActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

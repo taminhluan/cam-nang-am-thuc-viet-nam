@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 import com.example.recipes.model.Area;
@@ -21,6 +22,9 @@ public interface AreaDao {
 
     @Insert
     void insertAll(Area... areas);
+
+    @Update
+    void updateAll(Area... areas);
 
     @Delete
     void delete(Area area);

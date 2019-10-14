@@ -29,4 +29,9 @@
     <string name="home">Cẩm nang ẩm thực</string>
     <string name="admin">Quản trị</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="id">Id</string>
+    <string name="name">Name</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="add">Add</string>
 </resources>

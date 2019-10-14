@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.recipes.model.Category;
 
@@ -22,6 +23,9 @@ public interface CategoryDao {
 
     @Insert
     void insertAll(Category... categories);
+
+    @Update
+    void updateAll(Category... categories);
 
     @Delete
     void delete(Category category);
