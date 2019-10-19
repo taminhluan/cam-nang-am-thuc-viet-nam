@@ -19,11 +19,13 @@ import android.widget.TextView;
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
 import com.example.recipes.admin.category.CategoryAdminFragment;
+import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 import com.example.recipes.model.Category;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragment, View.OnClickListener {
@@ -51,6 +53,12 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
         return inflate;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getList();
+    }
+
     private void mapping(View view) {
         mBtnAdd = view.findViewById(R.id.btnAdd);
         mBtnAdd.setOnClickListener(this);
@@ -63,7 +71,7 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
 
     @Override
     public void getList() {
-        new GetListAsyncTask().execute();
+        new GetListAsyncTask(this).execute();
     }
 
     @Override
@@ -72,8 +80,15 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
     }
 
     @Override
+    public void goToUpdateAreaFragment(Area area) {
+        Intent intent = new Intent(getActivityNonNull(), AreaAdminDetailActivity.class);
+        intent.putExtra(AppConstant.AREA, area);
+        startActivity(intent);
+    }
+
+    @Override
     public void displayList(List<Area> areas) {
-        mRv.setAdapter(new AreasRecyclerViewAdapter(areas));
+        mRv.setAdapter(new AreasRecyclerViewAdapter(areas, this));
     }
 
     @Override
@@ -85,9 +100,11 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
 
     public class AreasRecyclerViewAdapter extends RecyclerView.Adapter<AreaAdminFragment.AreasRecyclerViewAdapter.RecyclerViewHolder> {
         private List<Area> data;
+        private IAreaAdminFragment mFragment;
 
-        public AreasRecyclerViewAdapter(List<Area> data) {
+        public AreasRecyclerViewAdapter(List<Area> data, IAreaAdminFragment fragment) {
             this.data = data;
+            mFragment = fragment;
         }
 
         @NonNull
@@ -100,7 +117,13 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-            Area area = data.get(i);
+            final Area area = data.get(i);
+            recyclerViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mFragment.goToUpdateAreaFragment(area);
+                }
+            });
             recyclerViewHolder.mTvName.setText(area.getName());
         }
 
@@ -111,23 +134,37 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
+            View mView;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
-
                 mTvName = itemView.findViewById(R.id.tvName);
+                mView = itemView;
+
             }
         }
     }
 
-    private class GetListAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class GetListAsyncTask extends AsyncTask<Void, Void, List<Area>> {
+        private WeakReference<IAreaAdminFragment> mWeakReferencesFragment;
+
+        public GetListAsyncTask(IAreaAdminFragment fragment) {
+            mWeakReferencesFragment = new WeakReference<>(fragment);
+        }
+
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected List<Area> doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
 
             List<Area> all = db.getAreaDao().getAll();
-            displayList(all);
 
-            return null;
+            return all;
+        }
+
+        @Override
+        protected void onPostExecute(List<Area> areas) {
+            super.onPostExecute(areas);
+
+            mWeakReferencesFragment.get().displayList(areas);
         }
     }
 }

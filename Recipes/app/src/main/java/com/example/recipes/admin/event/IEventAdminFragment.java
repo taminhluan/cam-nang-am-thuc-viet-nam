@@ -9,5 +9,7 @@ public interface IEventAdminFragment {
 
     void goToAddEventFragment();
 
+    void goToUpdateEventFragment(Event event);
+
     void displayList(List<Event> events);
 }

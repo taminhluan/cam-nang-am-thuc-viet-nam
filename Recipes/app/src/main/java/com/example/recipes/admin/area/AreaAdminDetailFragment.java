@@ -98,7 +98,7 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
 
     @Override
     public void display(Area area) {
-        mEtId.setText(area.getUid());
+        mEtId.setText(String.valueOf(area.getUid()));
         mEtImage.setText(area.getImage());
         mEtName.setText(area.getName());
 

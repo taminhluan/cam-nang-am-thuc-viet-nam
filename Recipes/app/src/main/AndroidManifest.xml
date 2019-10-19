@@ -11,10 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".admin.recipe.RecipeAdminDetailActivity"></activity>
-        <activity android:name=".admin.event.EventAdminDetailActivity" />
-        <activity android:name=".admin.area.AreaAdminDetailActivity" />
-        <activity android:name=".admin.category.CategoryAdminDetailActivity" />
+        <activity
+            android:name=".admin.recipe.RecipeAdminDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".admin.event.EventAdminDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".admin.area.AreaAdminDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".admin.category.CategoryAdminDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".app.recipe.RecipeActivity"
             android:theme="@style/AppTheme.NoActionBar" />

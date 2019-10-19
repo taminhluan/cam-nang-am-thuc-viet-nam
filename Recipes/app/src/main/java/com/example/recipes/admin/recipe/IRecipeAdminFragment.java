@@ -7,5 +7,6 @@ import java.util.List;
 public interface IRecipeAdminFragment {
     void getList();
     void goToAddRecipeFragment();
+    void goToUpdateRecipeFragment(Recipe recipe);
     void displayList(List<Recipe> recipes);
 }

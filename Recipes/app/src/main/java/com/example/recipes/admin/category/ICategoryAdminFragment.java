@@ -9,5 +9,7 @@ public interface ICategoryAdminFragment {
 
     void goToAddCategoryFragment();
 
+    void goToUpdateCategoryFragment(Category category);
+
     void displayList(List<Category> categories);
 }

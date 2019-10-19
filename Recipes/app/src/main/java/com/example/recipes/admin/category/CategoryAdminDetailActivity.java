@@ -1,13 +1,13 @@
 package com.example.recipes.admin.category;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.example.recipes.R;
 import com.example.recipes.admin.AdminActivity;
+import com.example.recipes.constant.AppConstant;
+import com.example.recipes.model.Category;
 import com.example.recipes.util.ActivityUtils;
 
 public class CategoryAdminDetailActivity extends AdminActivity{
@@ -32,13 +32,20 @@ public class CategoryAdminDetailActivity extends AdminActivity{
     }
 
     private void setupFragment() {
-        CategoryAdminDetailFragment fragment =
-                (CategoryAdminDetailFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        CategoryAdminDetailFragment fragment = (CategoryAdminDetailFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);;
+
         if (fragment == null) {
-            // Create the fragment
-            fragment = CategoryAdminDetailFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), fragment, R.id.contentFrame);
+            if (getIntent().hasExtra(AppConstant.CATEGORY)) {
+                Category category = (Category) getIntent().getSerializableExtra(AppConstant.CATEGORY);
+                fragment = CategoryAdminDetailFragment.newInstance(category);
+            } else {
+                fragment = CategoryAdminDetailFragment.newInstance();
+            }
         }
+
+        ActivityUtils.addFragmentToActivity(
+                getSupportFragmentManager(), fragment, R.id.contentFrame);
+
+
     }
 }

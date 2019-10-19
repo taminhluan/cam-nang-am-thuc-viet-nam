@@ -19,12 +19,14 @@ import android.widget.TextView;
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
 import com.example.recipes.admin.recipe.RecipeAdminFragment;
+import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Category;
 import com.example.recipes.model.Event;
 import com.example.recipes.model.Recipe;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class EventAdminFragment extends BaseFragment implements IEventAdminFragment, View.OnClickListener {
@@ -51,6 +53,12 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
         return inflate;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getList();
+    }
+
     private void mapping(View view) {
         mBtnAdd = view.findViewById(R.id.btnAdd);
         mBtnAdd.setOnClickListener(this);
@@ -63,7 +71,7 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
 
     @Override
     public void getList() {
-        new GetListAsyncTask().execute();
+        new GetListAsyncTask(this).execute();
     }
 
     @Override
@@ -72,8 +80,15 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
     }
 
     @Override
+    public void goToUpdateEventFragment(Event event) {
+        Intent intent = new Intent(getActivityNonNull(), EventAdminDetailActivity.class);
+        intent.putExtra(AppConstant.EVENT, event);
+        startActivity(intent);
+    }
+
+    @Override
     public void displayList(List<Event> events) {
-        mRv.setAdapter(new EventsRecyclerViewAdapter(events));
+        mRv.setAdapter(new EventsRecyclerViewAdapter(events, this));
     }
 
     @Override
@@ -85,9 +100,11 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
 
     public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecyclerViewAdapter.RecyclerViewHolder> {
         private List<Event> data;
+        private IEventAdminFragment mFragment;
 
-        public EventsRecyclerViewAdapter(List<Event> data) {
+        public EventsRecyclerViewAdapter(List<Event> data, IEventAdminFragment fragment) {
             this.data = data;
+            mFragment = fragment;
         }
 
         @NonNull
@@ -100,8 +117,14 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-            Event event = data.get(i);
+            final Event event = data.get(i);
             recyclerViewHolder.mTvName.setText(event.getName());
+            recyclerViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mFragment.goToUpdateEventFragment(event);
+                }
+            });
         }
 
         @Override
@@ -111,23 +134,35 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
+            View mView;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
-
+                mView = itemView;
                 mTvName = itemView.findViewById(R.id.tvName);
             }
         }
     }
 
-    private class GetListAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class GetListAsyncTask extends AsyncTask<Void, Void, List<Event>> {
+        private WeakReference<IEventAdminFragment> mWeakReferencesFragment;
+
+        public GetListAsyncTask(IEventAdminFragment fragment) {
+            mWeakReferencesFragment = new WeakReference<>(fragment);
+        }
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected List<Event> doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
 
             List<Event> all = db.getEventDao().getAll();
-            displayList(all);
 
-            return null;
+            return all;
+        }
+
+        @Override
+        protected void onPostExecute(List<Event> events) {
+            super.onPostExecute(events);
+
+            mWeakReferencesFragment.get().displayList(events);
         }
     }
 }

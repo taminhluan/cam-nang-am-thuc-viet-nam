@@ -16,10 +16,12 @@ import android.widget.TextView;
 
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
+import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Category;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class CategoryAdminFragment extends BaseFragment implements View.OnClickListener, ICategoryAdminFragment {
@@ -49,8 +51,14 @@ public class CategoryAdminFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getList();
+    }
+
+    @Override
     public void getList() {
-        new GetListAsyncTask().execute();
+        new GetListAsyncTask(this).execute();
     }
 
     private void mapping(View view) {
@@ -76,16 +84,26 @@ public class CategoryAdminFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
+    public void goToUpdateCategoryFragment(Category category) {
+        Intent intent = new Intent(getActivityNonNull(), CategoryAdminDetailActivity.class);
+        intent.putExtra(AppConstant.CATEGORY, category);
+        startActivity(intent);
+
+    }
+
+    @Override
     public void displayList(List<Category> categories) {
-        mRvCategories.setAdapter(new CategoriesRecyclerViewAdapter(categories));
+        mRvCategories.setAdapter(new CategoriesRecyclerViewAdapter(categories, this));
     }
 
 
     public class CategoriesRecyclerViewAdapter extends RecyclerView.Adapter<CategoriesRecyclerViewAdapter.RecyclerViewHolder> {
         private List<Category> data;
+        private ICategoryAdminFragment mFragment;
 
-        public CategoriesRecyclerViewAdapter(List<Category> data) {
+        public CategoriesRecyclerViewAdapter(List<Category> data, ICategoryAdminFragment fragment) {
             this.data = data;
+            mFragment = fragment;
         }
 
         @NonNull
@@ -98,8 +116,15 @@ public class CategoryAdminFragment extends BaseFragment implements View.OnClickL
 
         @Override
         public void onBindViewHolder(@NonNull CategoriesRecyclerViewAdapter.RecyclerViewHolder recyclerViewHolder, int i) {
-            Category category = data.get(i);
+            final Category category = data.get(i);
             recyclerViewHolder.mTvName.setText(category.getName());
+            recyclerViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mFragment.goToUpdateCategoryFragment(category);
+                }
+            });
+
         }
 
         @Override
@@ -109,25 +134,35 @@ public class CategoryAdminFragment extends BaseFragment implements View.OnClickL
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
+            View mView;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
 
                 mTvName = itemView.findViewById(R.id.tvName);
+                mView = itemView;
             }
         }
     }
 
+    private class GetListAsyncTask extends AsyncTask<Void, Void, List<Category>> {
+        private WeakReference<ICategoryAdminFragment> mWeakReferenceFragment;
 
-
-    private class GetListAsyncTask extends AsyncTask<Void, Void, Void> {
+        public GetListAsyncTask(ICategoryAdminFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected List<Category> doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
 
             List<Category> all = db.getCategoryDao().getAll();
-            displayList(all);
 
-            return null;
+            return all;
+        }
+
+        @Override
+        protected void onPostExecute(List<Category> categories) {
+            super.onPostExecute(categories);
+            mWeakReferenceFragment.get().displayList(categories);
         }
     }
 }

@@ -9,5 +9,7 @@ public interface IAreaAdminFragment {
 
     void goToAddAreaFragment();
 
+    void goToUpdateAreaFragment(Area area);
+
     void displayList(List<Area> areas);
 }

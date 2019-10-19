@@ -19,6 +19,8 @@ import com.example.recipes.R;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Category;
 
+import java.lang.ref.WeakReference;
+
 public class CategoryAdminDetailFragment extends BaseFragment implements ICategoryAdminDetailFragment, View.OnClickListener {
     private Category mCategory;
 
@@ -94,24 +96,34 @@ public class CategoryAdminDetailFragment extends BaseFragment implements ICatego
 
     @Override
     public void display(Category category) {
-        mEtId.setText(category.getUid());
+        if (category == null) return;
+
+        mEtId.setText(String.valueOf(category.getUid()));
         mEtImage.setText(category.getImage());
         mEtName.setText(category.getName());
     }
 
     @Override
     public void add(Category category) {
-        new AddAsyncTask().execute();
+        obtainCategory();
+        new AddAsyncTask(this).execute();
+    }
+
+    private void obtainCategory() {
+        mCategory.setImage(mEtImage.getText().toString());
+        mCategory.setName(mEtName.getText().toString());
     }
 
     @Override
     public void update(Category category) {
-        new UpdateAsyncTask().execute();
+        obtainCategory();
+        new UpdateAsyncTask(this).execute();
     }
 
     @Override
     public void delete(Category category) {
-        new DeleteAsyncTask().execute();
+        obtainCategory();
+        new DeleteAsyncTask(this).execute();
     }
 
     @Override
@@ -130,6 +142,11 @@ public class CategoryAdminDetailFragment extends BaseFragment implements ICatego
     }
 
     private class AddAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<ICategoryAdminDetailFragment> mWeakReferenceFragment;
+
+        public AddAsyncTask(ICategoryAdminDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
         @Override
         protected Void doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
@@ -142,11 +159,16 @@ public class CategoryAdminDetailFragment extends BaseFragment implements ICatego
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            back();
+            mWeakReferenceFragment.get().back();
         }
     }
 
     private class UpdateAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<ICategoryAdminDetailFragment> mWeakReferenceFragment;
+
+        public UpdateAsyncTask(ICategoryAdminDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
         @Override
         protected Void doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
@@ -159,11 +181,16 @@ public class CategoryAdminDetailFragment extends BaseFragment implements ICatego
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            back();
+            mWeakReferenceFragment.get().back();
         }
     }
 
     private class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<ICategoryAdminDetailFragment> mWeakReferenceFragment;
+
+        public DeleteAsyncTask(ICategoryAdminDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
         @Override
         protected Void doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
@@ -175,8 +202,7 @@ public class CategoryAdminDetailFragment extends BaseFragment implements ICatego
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-            back();
+            mWeakReferenceFragment.get().back();
         }
     }
 }

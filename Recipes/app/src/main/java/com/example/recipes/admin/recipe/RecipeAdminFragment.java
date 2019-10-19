@@ -18,12 +18,14 @@ import android.widget.TextView;
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
 import com.example.recipes.admin.area.AreaAdminFragment;
+import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 import com.example.recipes.model.Event;
 import com.example.recipes.model.Recipe;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 public class RecipeAdminFragment extends BaseFragment implements IRecipeAdminFragment, View.OnClickListener {
@@ -49,6 +51,12 @@ public class RecipeAdminFragment extends BaseFragment implements IRecipeAdminFra
         return inflate;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getList();
+    }
+
     private void mapping(View view) {
         mBtnAdd = view.findViewById(R.id.btnAdd);
         mBtnAdd.setOnClickListener(this);
@@ -61,7 +69,7 @@ public class RecipeAdminFragment extends BaseFragment implements IRecipeAdminFra
 
     @Override
     public void getList() {
-        new GetListAsyncTask().execute();
+        new GetListAsyncTask(this).execute();
     }
 
     @Override
@@ -70,8 +78,15 @@ public class RecipeAdminFragment extends BaseFragment implements IRecipeAdminFra
     }
 
     @Override
+    public void goToUpdateRecipeFragment(Recipe recipe) {
+        Intent intent = new Intent(getActivityNonNull(), RecipeAdminDetailActivity.class);
+        intent.putExtra(AppConstant.RECIPE, recipe);
+        startActivity(intent);
+    }
+
+    @Override
     public void displayList(List<Recipe> recipes) {
-        mRv.setAdapter(new RecipesRecyclerViewAdapter(recipes));
+        mRv.setAdapter(new RecipesRecyclerViewAdapter(recipes, this));
     }
 
     @Override
@@ -82,9 +97,11 @@ public class RecipeAdminFragment extends BaseFragment implements IRecipeAdminFra
     }
     public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecipesRecyclerViewAdapter.RecyclerViewHolder> {
         private List<Recipe> data;
+        private IRecipeAdminFragment mFragment;
 
-        public RecipesRecyclerViewAdapter(List<Recipe> data) {
+        public RecipesRecyclerViewAdapter(List<Recipe> data, IRecipeAdminFragment fragment) {
             this.data = data;
+            mFragment = fragment;
         }
 
         @NonNull
@@ -97,8 +114,14 @@ public class RecipeAdminFragment extends BaseFragment implements IRecipeAdminFra
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerViewHolder recyclerViewHolder, int i) {
-            Recipe recipe = data.get(i);
+            final Recipe recipe = data.get(i);
             recyclerViewHolder.mTvName.setText(recipe.getName());
+            recyclerViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mFragment.goToUpdateRecipeFragment(recipe);
+                }
+            });
         }
 
         @Override
@@ -108,24 +131,36 @@ public class RecipeAdminFragment extends BaseFragment implements IRecipeAdminFra
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
+            View mView;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
-
+                mView = itemView;
                 mTvName = itemView.findViewById(R.id.tvName);
             }
         }
     }
 
 
-    private class GetListAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class GetListAsyncTask extends AsyncTask<Void, Void, List<Recipe>> {
+        private WeakReference<IRecipeAdminFragment> mWeakReferencesFragment;
+
+        public GetListAsyncTask(IRecipeAdminFragment fragment) {
+            mWeakReferencesFragment = new WeakReference<>(fragment);
+        }
+
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected List<Recipe> doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
 
             List<Recipe> all = db.getRecipeDao().getAll();
-            displayList(all);
 
-            return null;
+            return all;
+        }
+
+        @Override
+        protected void onPostExecute(List<Recipe> recipes) {
+            super.onPostExecute(recipes);
+            mWeakReferencesFragment.get().displayList(recipes);
         }
     }
 }

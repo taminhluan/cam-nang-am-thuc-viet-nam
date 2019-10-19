@@ -7,6 +7,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(foreignKeys = {
         @ForeignKey(entity = Area.class,
             parentColumns = "uid",
@@ -18,7 +20,7 @@ import androidx.room.PrimaryKey;
                 parentColumns = "uid",
                 childColumns = "eventId"),
 })
-public class Recipe {
+public class Recipe implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 

@@ -21,6 +21,8 @@ import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Category;
 import com.example.recipes.model.Event;
 
+import java.lang.ref.WeakReference;
+
 public class EventAdminDetailFragment extends BaseFragment implements IEventAdminDetailFragment, View.OnClickListener {
     private Event mEvent;
 
@@ -37,7 +39,7 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
 
     private ImageView mIvImage;
     public EventAdminDetailFragment() {
-        // Required empty public constructor
+        mEvent = new Event();
     }
 
     public EventAdminDetailFragment(Event event) {
@@ -95,24 +97,26 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
 
     @Override
     public void display(Event event) {
-        mEtId.setText(event.getUid());
+        mEtId.setText(String.valueOf(event.getUid()));
         mEtImage.setText(event.getImage());
         mEtName.setText(event.getName());
     }
 
     @Override
     public void add(Event event) {
-        new AddAsyncTask().execute();
+        obtainValueFromScreen();
+        new AddAsyncTask(this).execute();
     }
 
     @Override
     public void update(Event event) {
-        new UpdateAsyncTask().execute();
+        obtainValueFromScreen();
+        new UpdateAsyncTask(this).execute();
     }
 
     @Override
     public void delete(Event event) {
-        new DeleteAsyncTask().execute();
+        new DeleteAsyncTask(this).execute();
     }
 
     @Override
@@ -130,7 +134,16 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
         }
     }
 
+    private void obtainValueFromScreen() {
+        mEvent.setImage(mEtImage.getText().toString());
+        mEvent.setName(mEtName.getText().toString());
+    }
+
     private class AddAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<IEventAdminDetailFragment> mWeakReferenceFragment;
+        public AddAsyncTask(IEventAdminDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
         @Override
         protected Void doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
@@ -142,12 +155,15 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-            back();
+            mWeakReferenceFragment.get().back();
         }
     }
 
     private class UpdateAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<IEventAdminDetailFragment> mWeakReferenceFragment;
+        public UpdateAsyncTask(IEventAdminDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
         @Override
         protected Void doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
@@ -160,11 +176,15 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            back();
+            mWeakReferenceFragment.get().back();
         }
     }
 
     private class DeleteAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<IEventAdminDetailFragment> mWeakReferenceFragment;
+        public DeleteAsyncTask(IEventAdminDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
         @Override
         protected Void doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
@@ -176,8 +196,7 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
-            back();
+            mWeakReferenceFragment.get().back();
         }
     }
 }
