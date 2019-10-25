@@ -6,5 +6,8 @@ public interface IAreaAdminDetailFragment {
     void add(Area area);
     void update(Area area);
     void delete(Area area);
+
+    void openCamera();
+
     void back();
 }

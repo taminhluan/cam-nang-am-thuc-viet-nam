@@ -48,11 +48,18 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.recipe_detail_frag, container, false);
 
-        onGetData(mRecipeId);
+        getDataFromIntent();
 
         mapping(view);
 
+
+
         return view;
+    }
+
+    @Override
+    public void getDataFromIntent() {
+        mRecipe = (Recipe) getActivityNonNull().getIntent().getSerializableExtra(AppConstant.RECIPE);
     }
 
     private void mapping(View view) {
@@ -85,11 +92,6 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
         } else if (view == mTvEventName) {
             onGoToEvent();
         }
-    }
-
-    @Override
-    public void onGetData(int id) {
-        //TODO: on get recipe data with async task
     }
 
     @Override

@@ -21,5 +21,7 @@ public interface IRecipeAdminDetailFragment {
     void displayListCategories(List<Category> categories);
     void displayListEvents(List<Event> events);
 
+    void openCamera();
+
     void back();
 }

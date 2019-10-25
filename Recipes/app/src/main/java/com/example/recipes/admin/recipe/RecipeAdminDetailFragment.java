@@ -1,9 +1,14 @@
 package com.example.recipes.admin.recipe;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -19,16 +25,21 @@ import android.widget.Spinner;
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
 import com.example.recipes.admin.area.AreaAdminDetailFragment;
+import com.example.recipes.admin.category.CategoryAdminDetailFragment;
 import com.example.recipes.app.recipe_detail.IRecipeDetailFragment;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 import com.example.recipes.model.Category;
 import com.example.recipes.model.Event;
 import com.example.recipes.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import gun0912.tedbottompicker.TedBottomPicker;
+import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 
 public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAdminDetailFragment, View.OnClickListener{
     private Recipe mRecipe;
@@ -38,7 +49,6 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     private Button mBtnDelete;
 
     private EditText mEtId;
-    private EditText mEtImage;
     private EditText mEtName;
 
     private LinearLayout mLlUpdateGroupButtons;
@@ -52,6 +62,7 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     private ArrayAdapter<String> mSpinnerCategoryAdapter;
     private ArrayAdapter<String> mSpinnerEventAdapter;
 
+    private ImageButton mIbAddImage;
     private ImageView mIvImage;
 
     private List<Area> mAreas;
@@ -86,7 +97,6 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     }
     private void mapping(View view) {
         mEtId = view.findViewById(R.id.etId);
-        mEtImage = view.findViewById(R.id.etImage);
         mEtName = view.findViewById(R.id.etName);
 
         mBtnAdd = view.findViewById(R.id.btnAdd);
@@ -103,6 +113,9 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
         mSpArea = view.findViewById(R.id.spArea);
         mSpCategory = view.findViewById(R.id.spCategory);
         mSpEvent = view.findViewById(R.id.spEvent);
+
+        mIbAddImage = view.findViewById(R.id.ibAddImage);
+        mIbAddImage.setOnClickListener(this);
     }
 
     private void initLayout() {
@@ -125,12 +138,15 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     @Override
     public void display(Recipe recipe) {
         mEtId.setText(String.valueOf(recipe.getUid()));
-        mEtImage.setText(recipe.getImage());
+
+        if (recipe.getImage() != null && recipe.getImage() != "") {
+            Picasso.get().load(recipe.getImage()).into(mIvImage);
+        }
+
         mEtName.setText(recipe.getName());
 
         //TODO display category, event, area
 
-        //TODO display image for ImageView
     }
 
     @Override
@@ -232,7 +248,9 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     // get value from edittext
     // save to mArea
     private void obtainValueFromScreen() {
-        mRecipe.setImage(mEtImage.getText().toString());
+        //TODO fix
+//        mRecipe.setImage(mEtImage.getText().toString());
+
         mRecipe.setName(mEtName.getText().toString());
 
         int areaId = mAreas.get(mSpArea.getSelectedItemPosition()).getUid();
@@ -243,6 +261,70 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
 
         int eventId = mEvents.get(mSpEvent.getSelectedItemPosition()).getUid();
         mRecipe.setEventId(eventId);
+    }
+
+    @Override
+    public void openCamera() {
+        if (isPermissionGranted()) {
+            TedBottomPicker.with(getActivityNonNull())
+                    .setPeekHeight(1600)
+                    .showTitle(false)
+                    .setCompleteButtonText(getText(R.string.btn_done).toString())
+                    .setEmptySelectionText(getText(R.string.label_no_selected).toString())
+                    .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
+                        @Override
+                        public void onImagesSelected(List<Uri> uriList) {
+                            RecipeAdminDetailFragment.this.openCameraReturn(uriList);
+                        }
+                    });
+        }
+    }
+
+    private void openCameraReturn(List<Uri> uriList) {
+        if (uriList.size() > 0) {
+            Uri uri = uriList.get(0);
+            mRecipe.setImage(uri.toString());
+            Picasso.get().load(uri.toString()).into(mIvImage);
+        }
+    }
+
+
+    public boolean isPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getActivityNonNull(), Manifest.permission.WRITE_EXTERNAL_STORAGE )
+                    == PackageManager.PERMISSION_GRANTED
+//                    && ActivityCompat.checkSelfPermission(getActivityNonNull(), Manifest.permission.CAMERA ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivityNonNull(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                        , Manifest.permission.CAMERA
+                }, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
@@ -258,6 +340,8 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
             delete(mRecipe);
         } else if (view == mBtnUpdate) {
             update(mRecipe);
+        } else if (view == mIbAddImage) {
+            openCamera();
         }
     }
 

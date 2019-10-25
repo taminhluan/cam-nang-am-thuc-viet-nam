@@ -3,7 +3,7 @@ package com.example.recipes.app.recipe_detail;
 import com.example.recipes.model.Recipe;
 
 public interface IRecipeDetailFragment {
-    void onGetData(int id);
+    void getDataFromIntent();
     void onDisplayData(Recipe recipe);
     void onShareOnFacebook();
 

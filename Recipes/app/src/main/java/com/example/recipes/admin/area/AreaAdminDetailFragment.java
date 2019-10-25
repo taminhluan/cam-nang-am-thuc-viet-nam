@@ -1,9 +1,14 @@
 package com.example.recipes.admin.area;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,16 +16,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
+import com.example.recipes.admin.category.CategoryAdminDetailFragment;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 import com.example.recipes.model.Category;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import gun0912.tedbottompicker.TedBottomPicker;
+import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 
 public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminDetailFragment, View.OnClickListener {
     private Area mArea;
@@ -30,12 +41,12 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
     private Button mBtnDelete;
 
     private EditText mEtId;
-    private EditText mEtImage;
     private EditText mEtName;
 
     private LinearLayout mLlUpdateGroupButtons;
     private LinearLayout mLlAddGroupButtons;
 
+    private ImageButton mIbAddImage;
     private ImageView mIvImage;
 
     public AreaAdminDetailFragment() {
@@ -61,13 +72,13 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
         View inflate = inflater.inflate(R.layout.area_admin_detail_frag, container, false);
 
         mapping(inflate);
+
         initLayout();
         return inflate;
     }
 
     private void mapping(View view) {
         mEtId = view.findViewById(R.id.etId);
-        mEtImage = view.findViewById(R.id.etImage);
         mEtName = view.findViewById(R.id.etName);
 
         mBtnAdd = view.findViewById(R.id.btnAdd);
@@ -81,6 +92,10 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
         mLlAddGroupButtons = view.findViewById(R.id.llCreateGroupButtons);
 
         mIvImage = view.findViewById(R.id.ivImage);
+
+        mIbAddImage = view.findViewById(R.id.ibAddImage);
+
+        mIbAddImage.setOnClickListener(this);
     }
 
     private void initLayout() {
@@ -99,10 +114,10 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
     @Override
     public void display(Area area) {
         mEtId.setText(String.valueOf(area.getUid()));
-        mEtImage.setText(area.getImage());
+        if (area.getImage() != null && area.getImage() != "") {
+            Picasso.get().load(area.getImage()).into(mIvImage);
+        }
         mEtName.setText(area.getName());
-
-        //TODO display image for ImageView
     }
 
     @Override
@@ -126,8 +141,73 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
     // get value from edittext
     // save to mArea
     private void obtainValueFromScreen() {
-        mArea.setImage(mEtImage.getText().toString());
+        //TODO Fix
+//        mArea.setImage(mEtImage.getText().toString());
         mArea.setName(mEtName.getText().toString());
+    }
+
+    @Override
+    public void openCamera() {
+        if (isPermissionGranted()) {
+            TedBottomPicker.with(getActivityNonNull())
+                    .setPeekHeight(1600)
+                    .showTitle(false)
+                    .setCompleteButtonText(getText(R.string.btn_done).toString())
+                    .setEmptySelectionText(getText(R.string.label_no_selected).toString())
+                    .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
+                        @Override
+                        public void onImagesSelected(List<Uri> uriList) {
+                            AreaAdminDetailFragment.this.openCameraReturn(uriList);
+                        }
+                    });
+        }
+    }
+
+    private void openCameraReturn(List<Uri> uriList) {
+        if (uriList.size() > 0) {
+            Uri uri = uriList.get(0);
+            mArea.setImage(uri.toString());
+            Picasso.get().load(uri.toString()).into(mIvImage);
+        }
+    }
+
+
+    public boolean isPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getActivityNonNull(), Manifest.permission.WRITE_EXTERNAL_STORAGE )
+                    == PackageManager.PERMISSION_GRANTED
+//                    && ActivityCompat.checkSelfPermission(getActivityNonNull(), Manifest.permission.CAMERA ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivityNonNull(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                        , Manifest.permission.CAMERA
+                }, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
@@ -143,6 +223,8 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
             delete(mArea);
         } else if (view == mBtnUpdate) {
             update(mArea);
+        } else if (view == mIbAddImage) {
+            openCamera();
         }
     }
 

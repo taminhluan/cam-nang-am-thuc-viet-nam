@@ -8,5 +8,8 @@ public interface IEventAdminDetailFragment {
     void add(Event event);
     void update(Event event);
     void delete(Event event);
+
+    void openCamera();
+
     void back();
 }

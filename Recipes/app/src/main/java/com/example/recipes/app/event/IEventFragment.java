@@ -7,4 +7,5 @@ import java.util.List;
 public interface IEventFragment {
     void onGetList();
     void onDisplayList(List<Event> events);
+    void goToRecipesByEvent(Event event);
 }

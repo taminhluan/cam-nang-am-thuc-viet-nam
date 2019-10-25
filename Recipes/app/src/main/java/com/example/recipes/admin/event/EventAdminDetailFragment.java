@@ -1,9 +1,14 @@
 package com.example.recipes.admin.event;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,8 +26,13 @@ import com.example.recipes.admin.category.CategoryAdminDetailFragment;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Category;
 import com.example.recipes.model.Event;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
+
+import gun0912.tedbottompicker.TedBottomPicker;
+import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 
 public class EventAdminDetailFragment extends BaseFragment implements IEventAdminDetailFragment, View.OnClickListener {
     private Event mEvent;
@@ -31,11 +42,12 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
     private Button mBtnDelete;
 
     private EditText mEtId;
-    private EditText mEtImage;
     private EditText mEtName;
 
     private LinearLayout mLlUpdateGroupButtons;
     private LinearLayout mLlAddGroupButtons;
+
+    private ImageButton mIbAddImage;
 
     private ImageView mIvImage;
     public EventAdminDetailFragment() {
@@ -66,7 +78,6 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
 
     private void mapping(View view) {
         mEtId = view.findViewById(R.id.etId);
-        mEtImage = view.findViewById(R.id.etImage);
         mEtName = view.findViewById(R.id.etName);
 
         mBtnAdd = view.findViewById(R.id.btnAdd);
@@ -78,6 +89,9 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
 
         mLlUpdateGroupButtons = view.findViewById(R.id.llUpdateGroupButtons);
         mLlAddGroupButtons = view.findViewById(R.id.llCreateGroupButtons);
+
+        mIbAddImage = view.findViewById(R.id.ibAddImage);
+        mIbAddImage.setOnClickListener(this);
 
         mIvImage = view.findViewById(R.id.ivImage);
     }
@@ -98,7 +112,9 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
     @Override
     public void display(Event event) {
         mEtId.setText(String.valueOf(event.getUid()));
-        mEtImage.setText(event.getImage());
+        if (event.getImage() != null && event.getImage() != "") {
+            Picasso.get().load(event.getImage()).into(mIvImage);
+        }
         mEtName.setText(event.getName());
     }
 
@@ -120,6 +136,70 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
     }
 
     @Override
+    public void openCamera() {
+        if (isPermissionGranted()) {
+            TedBottomPicker.with(getActivityNonNull())
+                    .setPeekHeight(1600)
+                    .showTitle(false)
+                    .setCompleteButtonText(getText(R.string.btn_done).toString())
+                    .setEmptySelectionText(getText(R.string.label_no_selected).toString())
+                    .showMultiImage(new TedBottomSheetDialogFragment.OnMultiImageSelectedListener() {
+                        @Override
+                        public void onImagesSelected(List<Uri> uriList) {
+                            EventAdminDetailFragment.this.openCameraReturn(uriList);
+                        }
+                    });
+        }
+    }
+
+    private void openCameraReturn(List<Uri> uriList) {
+        if (uriList.size() > 0) {
+            Uri uri = uriList.get(0);
+            mEvent.setImage(uri.toString());
+            Picasso.get().load(uri.toString()).into(mIvImage);
+        }
+    }
+
+
+    public boolean isPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ActivityCompat.checkSelfPermission(getActivityNonNull(), Manifest.permission.WRITE_EXTERNAL_STORAGE )
+                    == PackageManager.PERMISSION_GRANTED
+//                    && ActivityCompat.checkSelfPermission(getActivityNonNull(), Manifest.permission.CAMERA ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivityNonNull(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                        , Manifest.permission.CAMERA
+                }, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openCamera();
+                } else {
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    @Override
     public void back() {
         getActivityNonNull().finish();
     }
@@ -131,11 +211,14 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
             delete(mEvent);
         } else if (view == mBtnUpdate) {
             update(mEvent);
+        } else if (view == mIbAddImage) {
+            openCamera();
         }
     }
 
     private void obtainValueFromScreen() {
-        mEvent.setImage(mEtImage.getText().toString());
+        //TODO fix
+//        mEvent.setImage(mEtImage.getText().toString());
         mEvent.setName(mEtName.getText().toString());
     }
 

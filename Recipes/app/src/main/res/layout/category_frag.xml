@@ -5,9 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".app.category.CategoryFragment">
 
-    <ImageView
-        android:id="@+id/full"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/hint_menu"/>
+        android:layout_height="wrap_content"/>
 </FrameLayout>

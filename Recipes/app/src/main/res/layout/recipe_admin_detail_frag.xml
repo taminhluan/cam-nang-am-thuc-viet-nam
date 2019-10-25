@@ -82,8 +82,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="@string/image" />
-            <EditText
-                android:id="@+id/etImage"
+            <ImageButton
+                android:id="@+id/ibAddImage"
+                android:src="@drawable/baseline_add_a_photo_24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

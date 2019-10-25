@@ -7,4 +7,5 @@ import java.util.List;
 public interface ICategoryFragment {
     void onGetList();
     void onDisplayList(List<Category> categories);
+    void goToRecipesByCategory(Category category);
 }

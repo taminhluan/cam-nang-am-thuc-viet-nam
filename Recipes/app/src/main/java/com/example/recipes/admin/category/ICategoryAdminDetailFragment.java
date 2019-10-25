@@ -7,6 +7,10 @@ public interface ICategoryAdminDetailFragment {
     void add(Category category);
     void update(Category category);
     void delete(Category category);
+
+
+    void openCamera();
+
     void back();
 
 }
