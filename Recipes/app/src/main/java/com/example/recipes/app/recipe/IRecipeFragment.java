@@ -8,4 +8,5 @@ public interface IRecipeFragment {
     void onGetList();
     void onDisplayList(List<Recipe> recipes);
     void goToRecipeDetail(Recipe recipe);
+    void openPopupFilter();
 }

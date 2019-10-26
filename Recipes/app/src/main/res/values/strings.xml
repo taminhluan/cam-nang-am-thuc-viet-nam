@@ -17,7 +17,7 @@
     <string name="placeholder_event_name">Tên dịp lễ</string>
     <string name="placeholder_detail">Chi tiết</string>
     <string name="placeholder_ingredients">Danh sách nguyên liệu</string>
-    <string name="image">image</string>
+    <string name="image">Hình ảnh</string>
     <string name="application">Ứng dụng</string>
     <string name="about">Về ứng dụng</string>
     <string name="other">Khác</string>
@@ -43,4 +43,5 @@
     <string name="hint">hint</string>
     <string name="intro">Giới thiệu</string>
     <string name="placeholder_recipe_name">Tên công thức</string>
+    <string name="filter">Lọc</string>
 </resources>

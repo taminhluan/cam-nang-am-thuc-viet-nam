@@ -77,6 +77,11 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         startActivity(intent);
     }
 
+    @Override
+    public void openPopupFilter() {
+
+    }
+
     public class RecipesRecyclerViewAdapter extends RecyclerView.Adapter<RecipesRecyclerViewAdapter.RecyclerViewHolder> {
         private List<Recipe> data;
         private IRecipeFragment mFragment;
