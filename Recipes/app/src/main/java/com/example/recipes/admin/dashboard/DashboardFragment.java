@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -21,10 +22,10 @@ import com.example.recipes.admin.recipe.RecipeAdminActivity;
 
 public class DashboardFragment extends BaseFragment implements IDashboardFragment, View.OnClickListener {
 
-    private Button mBtnAreaAdmin;
-    private Button mBtnAreaCategory;
-    private Button mBtnEventCategory;
-    private Button mBtnRecipeCategory;
+    private CardView mBtnAreaAdmin;
+    private CardView mBtnAreaCategory;
+    private CardView mBtnEventCategory;
+    private CardView mBtnRecipeCategory;
 
     public DashboardFragment() {
         // Required empty public constructor

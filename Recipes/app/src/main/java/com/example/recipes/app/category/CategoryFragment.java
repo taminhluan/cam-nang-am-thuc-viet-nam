@@ -28,6 +28,7 @@ import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 import com.example.recipes.model.Category;
 import com.example.recipes.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -94,7 +95,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryFragment,
         @Override
         public CategoriesRecyclerViewAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            View view = inflater.inflate(R.layout.item_category, viewGroup, false);
+            View view = inflater.inflate(R.layout.item_category_home, viewGroup, false);
             return new CategoriesRecyclerViewAdapter.RecyclerViewHolder(view);
         }
 
@@ -108,6 +109,9 @@ public class CategoryFragment extends BaseFragment implements ICategoryFragment,
                     mFragment.goToRecipesByCategory(category);
                 }
             });
+            if (category.getImage() != null && category.getImage() != "") {
+                Picasso.get().load(category.getImage()).into(recyclerViewHolder.mIv);
+            }
 
         }
 
@@ -119,10 +123,12 @@ public class CategoryFragment extends BaseFragment implements ICategoryFragment,
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
             View mView;
+            ImageView mIv;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
 
                 mTvName = itemView.findViewById(R.id.tvName);
+                mIv = itemView.findViewById(R.id.iv);
                 mView = itemView;
             }
         }

@@ -21,6 +21,7 @@ import com.example.recipes.app.area.AreaActivity;
 import com.example.recipes.app.category.CategoryActivity;
 import com.example.recipes.app.event.EventActivity;
 import com.example.recipes.app.main.MainActivity;
+import com.example.recipes.app.recipe.RecipeActivity;
 
 public class DrawerFragment extends Fragment implements View.OnClickListener {
     private ActionBarDrawerToggle mDrawerToggle;
@@ -112,7 +113,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         Intent intent;
         switch (v.getId()) {
             case R.id.menuHome:
-                intent = new Intent(this.getActivity(), MainActivity.class);
+                intent = new Intent(this.getActivity(), RecipeActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menuCategory:

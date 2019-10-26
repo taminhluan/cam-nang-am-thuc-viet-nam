@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.recipes.BaseFragment;
@@ -23,6 +24,7 @@ import com.example.recipes.app.recipe.RecipeActivity;
 import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Event;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -80,7 +82,7 @@ public class EventFragment extends BaseFragment implements IEventFragment {
         @Override
         public EventsRecyclerViewAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            View view = inflater.inflate(R.layout.item_event, viewGroup, false);
+            View view = inflater.inflate(R.layout.item_event_home, viewGroup, false);
             return new EventsRecyclerViewAdapter.RecyclerViewHolder(view);
         }
 
@@ -94,6 +96,9 @@ public class EventFragment extends BaseFragment implements IEventFragment {
                     mFragment.goToRecipesByEvent(event);
                 }
             });
+            if (event.getImage() != null && event.getImage() != "") {
+                Picasso.get().load(event.getImage()).into(recyclerViewHolder.mIv);
+            }
         }
 
         @Override
@@ -104,10 +109,12 @@ public class EventFragment extends BaseFragment implements IEventFragment {
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
             View mView;
+            ImageView mIv;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
                 mView = itemView;
                 mTvName = itemView.findViewById(R.id.tvName);
+                mIv = itemView.findViewById(R.id.iv);
             }
         }
     }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.recipes.BaseFragment;
@@ -24,6 +25,7 @@ import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 import com.example.recipes.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -86,8 +88,7 @@ public class AreaFragment extends BaseFragment implements IAreaFragment {
         @Override
         public AreasRecyclerViewAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            //TODO layout for this
-            View view = inflater.inflate(R.layout.item_area, viewGroup, false);
+            View view = inflater.inflate(R.layout.item_area_home, viewGroup, false);
             return new AreasRecyclerViewAdapter.RecyclerViewHolder(view);
         }
 
@@ -101,6 +102,9 @@ public class AreaFragment extends BaseFragment implements IAreaFragment {
                 }
             });
             recyclerViewHolder.mTvName.setText(area.getName());
+            if (area.getImage() != null && area.getImage() != "") {
+                Picasso.get().load(area.getImage()).into(recyclerViewHolder.mIv);
+            }
         }
 
         @Override
@@ -110,11 +114,13 @@ public class AreaFragment extends BaseFragment implements IAreaFragment {
 
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
+            ImageView mIv;
             View mView;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
                 mTvName = itemView.findViewById(R.id.tvName);
                 mView = itemView;
+                mIv = itemView.findViewById(R.id.iv);
 
             }
         }

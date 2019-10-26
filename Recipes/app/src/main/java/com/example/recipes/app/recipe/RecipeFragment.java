@@ -89,7 +89,7 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         @Override
         public RecipesRecyclerViewAdapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            View view = inflater.inflate(R.layout.item_recipe, viewGroup, false);
+            View view = inflater.inflate(R.layout.item_recipe_home, viewGroup, false);
             return new RecipesRecyclerViewAdapter.RecyclerViewHolder(view);
         }
 
