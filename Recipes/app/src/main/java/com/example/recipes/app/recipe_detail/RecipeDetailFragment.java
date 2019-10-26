@@ -15,6 +15,7 @@ import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
 import com.example.recipes.app.area.AreaActivity;
 import com.example.recipes.app.category.CategoryActivity;
+import com.example.recipes.app.category.ICategoryFragment;
 import com.example.recipes.app.event.EventActivity;
 import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
@@ -22,24 +23,26 @@ import com.example.recipes.model.Area;
 import com.example.recipes.model.Category;
 import com.example.recipes.model.Event;
 import com.example.recipes.model.Recipe;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 
 public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailFragment, View.OnClickListener {
 
-    private final int mRecipeId;
     private Recipe mRecipe;
 
     private TextView mTvCategoryName, mTvAreaName, mTvEventName, mTvRecipeName, mTvIngredients, mTvDetail;
     private ImageView mIvRecipe;
+    private TextView mTvKCal;
+    private TextView mTvMinsToCook;
 
-    public RecipeDetailFragment(int recipeId) {
-        mRecipeId = recipeId;
-    }
+    private FloatingActionButton mBtnShare;
 
-    public static RecipeDetailFragment getInstance(int recipeId) {
-        return new RecipeDetailFragment(recipeId);
+    public static RecipeDetailFragment getInstance() {
+        return new RecipeDetailFragment();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
 
         mapping(view);
 
-
+        onDisplayData(mRecipe);
 
         return view;
     }
@@ -77,6 +80,13 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
         mTvDetail = view.findViewById(R.id.tvDetail);
 
         mIvRecipe = view.findViewById(R.id.ivRecipe);
+
+        mBtnShare = view.findViewById(R.id.btnShare);
+        mBtnShare.setOnClickListener(this);
+
+
+        mTvMinsToCook = view.findViewById(R.id.tvMinsToCook);
+        mTvKCal = view.findViewById(R.id.tvKCal);
     }
 
     @Override
@@ -91,23 +101,39 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
             onGoToArea();
         } else if (view == mTvEventName) {
             onGoToEvent();
+        } else if (view == mBtnShare) {
+            onShareOnFacebook();
         }
     }
 
     @Override
     public void onDisplayData(Recipe recipe) {
-        mTvCategoryName.setText(recipe.getCategory().getName());
-        mTvEventName.setText(recipe.getEvent().getName());
-        mTvAreaName.setText(recipe.getArea().getName());
         mTvDetail.setText(recipe.getDetail());
+        mTvRecipeName.setText(recipe.getName());
+
+
         mTvIngredients.setText(recipe.getIngredients());
 
-        //TODO: display images
+        mTvKCal.setText(String.format("%skCal", String.valueOf(recipe.getKcal())));
+        mTvMinsToCook.setText(String.format("%s phút", String.valueOf(recipe.getMinsToCook())));
+
+        if (recipe.getImage() != null && !recipe.getImage().equals("")) {
+            Picasso.get().load(recipe.getImage()).into(mIvRecipe);
+        }
+
+        new ObtainRecipeInfoAsyncTask(this, recipe).execute();
     }
 
     @Override
     public void onShareOnFacebook() {
         //TODO: share on facebook
+    }
+
+    @Override
+    public void onDisplayMoreInfo(Recipe recipe) {
+        mTvCategoryName.setText(recipe.getCategory().getName());
+        mTvEventName.setText(recipe.getEvent().getName());
+        mTvAreaName.setText(recipe.getArea().getName());
     }
 
     @Override
@@ -145,34 +171,35 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
         getActivityNonNull().finish();
     }
 
-    private static class GetRecipeDataAsyncTask extends AsyncTask<Void, Void, Recipe> {
-        private WeakReference<RecipeDetailFragment> mRecipeDetailFragment;
-        private AppDatabase mdb;
+    private class ObtainRecipeInfoAsyncTask extends AsyncTask<Void, Void, Recipe> {
+        private Recipe mRecipe;
 
-        public GetRecipeDataAsyncTask(RecipeDetailFragment recipeDetailFragment) {
-            mRecipeDetailFragment = new WeakReference<>(recipeDetailFragment);
-            mdb = AppDatabase.getInstance(mRecipeDetailFragment.get().getContext());
+        private WeakReference<IRecipeDetailFragment> mWeakReferenceFragment;
+
+        public ObtainRecipeInfoAsyncTask(IRecipeDetailFragment fragment, Recipe recipe) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+            mRecipe = recipe;
         }
-
         @Override
         protected Recipe doInBackground(Void... voids) {
-            //TODO: get recipe data do in background
-            return null;
+
+            AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
+
+            Category category = db.getCategoryDao().findById(mRecipe.getAreaId());
+            Area area = db.getAreaDao().findById(mRecipe.getAreaId());
+            Event event = db.getEventDao().findById(mRecipe.getEventId());
+
+            mRecipe.setCategory(category);
+            mRecipe.setEvent(event);
+            mRecipe.setArea(area);
+
+            return mRecipe;
         }
 
         @Override
         protected void onPostExecute(Recipe recipe) {
             super.onPostExecute(recipe);
-
-            obtainData(recipe);
-
-            IRecipeDetailFragment recipeDetailFragment = mRecipeDetailFragment.get();
-            recipeDetailFragment.onDisplayData(recipe);
-        }
-
-        private void obtainData(Recipe recipe) {
-            //TODO: obtain recipe
-
+            mWeakReferenceFragment.get().onDisplayMoreInfo(recipe);
         }
     }
 }

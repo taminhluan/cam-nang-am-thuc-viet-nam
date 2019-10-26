@@ -33,6 +33,10 @@ public class Recipe implements Serializable {
     @ColumnInfo
     private String detail;
 
+    private double kcal;
+
+    private int minsToCook;
+
     @ColumnInfo
     private String ingredients;
 
@@ -139,5 +143,21 @@ public class Recipe implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public double getKcal() {
+        return kcal;
+    }
+
+    public void setKcal(double kcal) {
+        this.kcal = kcal;
+    }
+
+    public int getMinsToCook() {
+        return minsToCook;
+    }
+
+    public void setMinsToCook(int minsToCook) {
+        this.minsToCook = minsToCook;
     }
 }

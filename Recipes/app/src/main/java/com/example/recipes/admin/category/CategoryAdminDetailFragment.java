@@ -114,7 +114,7 @@ public class CategoryAdminDetailFragment extends BaseFragment implements ICatego
 
         mEtId.setText(String.valueOf(category.getUid()));
 
-        if (category.getImage() != null && category.getImage() != "") {
+        if (category.getImage() != null && !category.getImage().equals("")) {
             Picasso.get().load(category.getImage()).into(mIvImage);
         }
         mEtName.setText(category.getName());

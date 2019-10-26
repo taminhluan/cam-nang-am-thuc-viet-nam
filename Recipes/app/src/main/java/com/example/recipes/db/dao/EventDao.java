@@ -21,6 +21,9 @@ public interface EventDao {
     @Query("SELECT * FROM event WHERE name LIKE :name LIMIT 1")
     Event findByName(String name);
 
+    @Query("SELECT * FROM event WHERE uid LIKE :id LIMIT 1")
+    Event findById(int id);
+
     @Insert
     void insertAll(Event... events);
 

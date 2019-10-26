@@ -2,12 +2,14 @@ package com.example.recipes.admin.recipe;
 
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -50,6 +52,8 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
 
     private EditText mEtId;
     private EditText mEtName;
+    private EditText mEtMinsToCook;
+    private EditText mEtKCal;
 
     private LinearLayout mLlUpdateGroupButtons;
     private LinearLayout mLlAddGroupButtons;
@@ -98,6 +102,8 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     private void mapping(View view) {
         mEtId = view.findViewById(R.id.etId);
         mEtName = view.findViewById(R.id.etName);
+        mEtMinsToCook = view.findViewById(R.id.etMinsToCook);
+        mEtKCal = view.findViewById(R.id.etKCal);
 
         mBtnAdd = view.findViewById(R.id.btnAdd);
         mBtnAdd.setOnClickListener(this);
@@ -139,11 +145,13 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     public void display(Recipe recipe) {
         mEtId.setText(String.valueOf(recipe.getUid()));
 
-        if (recipe.getImage() != null && recipe.getImage() != "") {
+        if (recipe.getImage() != null && !recipe.getImage().equals("")) {
             Picasso.get().load(recipe.getImage()).into(mIvImage);
         }
 
         mEtName.setText(recipe.getName());
+        mEtKCal.setText(String.valueOf(recipe.getKcal()));
+        mEtMinsToCook.setText(String.valueOf(recipe.getMinsToCook()));
 
         //TODO display category, event, area
 
@@ -163,8 +171,17 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
 
     @Override
     public void delete(Recipe recipe) {
-        obtainValueFromScreen();
-        new DeleteAsyncTask(this).execute();
+        new AlertDialog.Builder(getActivityNonNull())
+                .setTitle("Xác nhận")
+                .setMessage("Bạn có thực sự muốn xóa?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        obtainValueFromScreen();
+                        new DeleteAsyncTask(RecipeAdminDetailFragment.this).execute();
+                    }})
+                .setNegativeButton(R.string.no, null).show();
     }
 
     @Override
@@ -248,9 +265,6 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     // get value from edittext
     // save to mArea
     private void obtainValueFromScreen() {
-        //TODO fix
-//        mRecipe.setImage(mEtImage.getText().toString());
-
         mRecipe.setName(mEtName.getText().toString());
 
         int areaId = mAreas.get(mSpArea.getSelectedItemPosition()).getUid();
@@ -261,6 +275,9 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
 
         int eventId = mEvents.get(mSpEvent.getSelectedItemPosition()).getUid();
         mRecipe.setEventId(eventId);
+
+        mRecipe.setKcal(Double.valueOf(mEtKCal.getText().toString()));
+        mRecipe.setMinsToCook(Integer.valueOf(mEtMinsToCook.getText().toString()));
     }
 
     @Override

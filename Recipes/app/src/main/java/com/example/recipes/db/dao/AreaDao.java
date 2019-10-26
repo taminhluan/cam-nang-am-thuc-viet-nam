@@ -20,6 +20,9 @@ public interface AreaDao {
     @Query("SELECT * FROM area WHERE name LIKE :name LIMIT 1")
     Area findByName(String name);
 
+    @Query("SELECT * FROM area WHERE uid = :id LIMIT 1")
+    Area findById(int id);
+
     @Insert
     void insertAll(Area... areas);
 

@@ -7,6 +7,8 @@ public interface IRecipeDetailFragment {
     void onDisplayData(Recipe recipe);
     void onShareOnFacebook();
 
+    void onDisplayMoreInfo(Recipe recipe);
+
     void onGoToArea();
     void onGoToEvent();
     void onGoToCategory();

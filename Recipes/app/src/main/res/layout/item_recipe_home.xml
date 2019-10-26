@@ -23,6 +23,8 @@
             android:id="@+id/iv"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:src="@drawable/recipe_placeholder"
+            android:scaleType="centerCrop"
             />
 
 <!--        <com.joooonho.SelectableRoundedImageView-->
@@ -53,21 +55,22 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:gravity="center_vertical"
-            android:padding="16dp">
+            android:padding="5dp">
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/imageView"-->
-<!--                android:src="@drawable/ic_favorite" />-->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/ic_fire_grey600_24dp"
+                android:tint="@color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Text"
+                android:text="@string/hint"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                android:id="@+id/tvRatingItem"
-                android:layout_marginEnd="4dp" />
+                android:id="@+id/tvKCal"
+                android:layout_marginEnd="2dp" />
 
         </LinearLayout>
 
@@ -78,21 +81,22 @@
             android:gravity="center_vertical"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:padding="16dp">
+            android:padding="5dp">
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/imageView2"-->
-<!--                android:src="@drawable/ic_clock" />-->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@drawable/ic_clock"
+                android:tint="@color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                android:text="New Text"
-                android:id="@+id/tvTimeItem"
-                android:layout_marginStart="4dp" />
+                android:text="@string/hint"
+                android:id="@+id/tvMinsToCook"
+                android:layout_marginStart="2dp" />
 
         </LinearLayout>
     </RelativeLayout>

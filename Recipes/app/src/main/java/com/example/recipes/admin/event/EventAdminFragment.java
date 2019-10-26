@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.recipes.BaseFragment;
@@ -25,6 +26,7 @@ import com.example.recipes.model.Category;
 import com.example.recipes.model.Event;
 import com.example.recipes.model.Recipe;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -125,6 +127,10 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
                     mFragment.goToUpdateEventFragment(event);
                 }
             });
+
+            if (event.getImage() != null && !event.getImage().equals("")) {
+                Picasso.get().load(event.getImage()).into(recyclerViewHolder.mIv);
+            }
         }
 
         @Override
@@ -135,10 +141,12 @@ public class EventAdminFragment extends BaseFragment implements IEventAdminFragm
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
             View mView;
+            ImageView mIv;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
                 mView = itemView;
                 mTvName = itemView.findViewById(R.id.tvName);
+                mIv = itemView.findViewById(R.id.iv);
             }
         }
     }

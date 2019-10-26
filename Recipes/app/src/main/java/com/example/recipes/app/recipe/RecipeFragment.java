@@ -24,6 +24,7 @@ import com.example.recipes.app.recipe_detail.RecipeDetailActivity;
 import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Recipe;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -103,6 +104,11 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
                     mFragment.goToRecipeDetail(recipe);
                 }
             });
+            if (recipe.getImage() != null && !recipe.getImage().equals("")) {
+                Picasso.get().load(recipe.getImage()).into(recyclerViewHolder.mIv);
+            }
+            recyclerViewHolder.mTvKCal.setText(String.format("%s KCal", String.valueOf(recipe.getKcal())));
+            recyclerViewHolder.mTvMinsToCook.setText(String.format("%s min", String.valueOf(recipe.getMinsToCook())));
         }
 
         @Override
@@ -113,10 +119,17 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
             View mView;
+            ImageView mIv;
+            TextView mTvMinsToCook;
+            TextView mTvKCal;
+
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
                 mView = itemView;
                 mTvName = itemView.findViewById(R.id.tvName);
+                mIv = itemView.findViewById(R.id.iv);
+                mTvMinsToCook = itemView.findViewById(R.id.tvMinsToCook);
+                mTvKCal = itemView.findViewById(R.id.tvKCal);
             }
         }
     }

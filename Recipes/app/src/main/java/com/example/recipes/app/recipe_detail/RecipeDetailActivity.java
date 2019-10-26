@@ -37,8 +37,7 @@ public class RecipeDetailActivity extends BaseActivity {
                 (RecipeDetailFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (fragment == null) {
             // Create the fragment
-            //TODO: fake recipe id for build
-            fragment = RecipeDetailFragment.getInstance(0);
+            fragment = RecipeDetailFragment.getInstance();
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), fragment, R.id.contentFrame);
         }

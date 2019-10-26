@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.recipes.BaseFragment;
@@ -24,6 +25,7 @@ import com.example.recipes.db.AppDatabase;
 import com.example.recipes.model.Area;
 import com.example.recipes.model.Category;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -125,6 +127,9 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
                 }
             });
             recyclerViewHolder.mTvName.setText(area.getName());
+            if (area.getImage() != null && !area.getImage().equals("")) {
+                Picasso.get().load(area.getImage()).into(recyclerViewHolder.mIv);
+            }
         }
 
         @Override
@@ -135,11 +140,12 @@ public class AreaAdminFragment extends BaseFragment implements IAreaAdminFragmen
         public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             TextView mTvName;
             View mView;
+            ImageView mIv;
             public RecyclerViewHolder(View itemView) {
                 super(itemView);
                 mTvName = itemView.findViewById(R.id.tvName);
                 mView = itemView;
-
+                mIv = itemView.findViewById(R.id.iv);
             }
         }
     }

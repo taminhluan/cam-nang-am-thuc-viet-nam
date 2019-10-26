@@ -112,7 +112,7 @@ public class EventAdminDetailFragment extends BaseFragment implements IEventAdmi
     @Override
     public void display(Event event) {
         mEtId.setText(String.valueOf(event.getUid()));
-        if (event.getImage() != null && event.getImage() != "") {
+        if (event.getImage() != null && !event.getImage().equals("")) {
             Picasso.get().load(event.getImage()).into(mIvImage);
         }
         mEtName.setText(event.getName());

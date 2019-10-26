@@ -27,16 +27,6 @@
             android:scaleType="centerCrop"
             />
 
-<!--        <com.joooonho.SelectableRoundedImageView-->
-<!--            android:id="@+id/ivRecipeItem"-->
-<!--            android:scaleType="centerCrop"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/item_recipe_height"-->
-<!--            app:sriv_left_top_corner_radius="4dp"-->
-<!--            app:sriv_right_top_corner_radius="4dp"-->
-<!--            app:sriv_left_bottom_corner_radius="4dp"-->
-<!--            app:sriv_right_bottom_corner_radius="4dp"/>-->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,54 +38,5 @@
             android:layout_margin="16dp"
             android:maxLines="4" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center_vertical"
-            android:padding="16dp">
-
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/imageView"-->
-<!--                android:src="@drawable/ic_favorite" />-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                android:id="@+id/tvRatingItem"
-                android:layout_marginEnd="4dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:padding="16dp">
-
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/imageView2"-->
-<!--                android:src="@drawable/ic_clock" />-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                android:text="New Text"
-                android:id="@+id/tvTimeItem"
-                android:layout_marginStart="4dp" />
-
-        </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

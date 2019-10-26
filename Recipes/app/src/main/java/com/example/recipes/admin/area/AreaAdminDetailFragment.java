@@ -114,7 +114,7 @@ public class AreaAdminDetailFragment extends BaseFragment implements IAreaAdminD
     @Override
     public void display(Area area) {
         mEtId.setText(String.valueOf(area.getUid()));
-        if (area.getImage() != null && area.getImage() != "") {
+        if (area.getImage() != null && !area.getImage().equals("")) {
             Picasso.get().load(area.getImage()).into(mIvImage);
         }
         mEtName.setText(area.getName());
