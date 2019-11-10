@@ -44,4 +44,6 @@
     <string name="intro">Giới thiệu</string>
     <string name="placeholder_recipe_name">Tên công thức</string>
     <string name="filter">Lọc</string>
+    <string name="keyword">Từ khóa</string>
+    <string name="search">Tìm kiếm</string>
 </resources>
