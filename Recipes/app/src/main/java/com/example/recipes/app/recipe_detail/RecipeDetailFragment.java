@@ -185,7 +185,7 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
 
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
 
-            Category category = db.getCategoryDao().findById(mRecipe.getAreaId());
+            Category category = db.getCategoryDao().findById(mRecipe.getCategoryId());
             Area area = db.getAreaDao().findById(mRecipe.getAreaId());
             Event event = db.getEventDao().findById(mRecipe.getEventId());
 

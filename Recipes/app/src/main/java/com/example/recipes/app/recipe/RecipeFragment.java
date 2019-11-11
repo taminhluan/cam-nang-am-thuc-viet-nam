@@ -9,7 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,16 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
-import com.example.recipes.admin.recipe.IRecipeAdminDetailFragment;
-import com.example.recipes.admin.recipe.IRecipeAdminFragment;
-import com.example.recipes.admin.recipe.RecipeAdminDetailFragment;
-import com.example.recipes.admin.recipe.RecipeAdminFragment;
 import com.example.recipes.app.recipe_detail.RecipeDetailActivity;
 import com.example.recipes.constant.AppConstant;
 import com.example.recipes.db.AppDatabase;
@@ -37,7 +34,6 @@ import com.example.recipes.model.Area;
 import com.example.recipes.model.Recipe;
 import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +44,9 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
     private Area mArea;
     private Event mEvent;
     private Category mCategory;
+    RecipesRecyclerViewAdapter mRecipesRecyclerViewAdapter;
+    private List<Recipe> all;
+    private List<Recipe> mFilteredRecipes;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -70,6 +69,39 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         return inflate;
     }
 
+    private void onFilter(String keyword, Area area, Category category, Event event) {
+        mFilteredRecipes.clear();
+        for (Recipe recipe: all) {
+            boolean valid = true;
+
+            if (! recipe.getName().contains(keyword)) {
+                valid = false;
+            }
+            if (area != null) {
+                if (area.getUid() != recipe.getAreaId()) {
+                    valid = false;
+                }
+            }
+
+            if (category != null) {
+                if (category.getUid() != recipe.getCategoryId()) {
+                    valid = false;
+                }
+            }
+
+            if (event != null) {
+                if (event.getUid() != recipe.getEventId()) {
+                    valid = false;
+                }
+            }
+
+            if (valid) {
+                mFilteredRecipes.add(recipe);
+            }
+        }
+        mRecipesRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
     private void getDataFromIntent() {
         Intent intent = getActivityNonNull().getIntent();
 
@@ -86,7 +118,6 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
 
     @Override
     public void onClick(View view) {
-
     }
 
     @Override
@@ -96,7 +127,10 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
 
     @Override
     public void onDisplayList(List<Recipe> recipes) {
-        mRv.setAdapter(new RecipesRecyclerViewAdapter(recipes, this));
+        all = recipes;
+        mFilteredRecipes = recipes;
+        mRecipesRecyclerViewAdapter = new RecipesRecyclerViewAdapter(mFilteredRecipes, this);
+        mRv.setAdapter(mRecipesRecyclerViewAdapter);
     }
 
     @Override
@@ -108,7 +142,7 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
 
     @Override
     public void openPopupFilter() {
-        FilterDialogFragment filterDialogFragment =  new FilterDialogFragment(getActivityNonNull(), mArea, mCategory, mEvent);
+        FilterDialogFragment filterDialogFragment =  new FilterDialogFragment(getActivityNonNull(), this, mArea, mCategory, mEvent);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         filterDialogFragment.show(ft, "dialog");
 
@@ -131,13 +165,19 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         private Category mCategory;
         private Event mEvent;
 
-        private Activity mActivity;
+        private EditText metKeyword;
 
-        public FilterDialogFragment(Activity activity, Area area, Category category, Event event) {
+        private Button mbtnAdd;
+
+        private Activity mActivity;
+        private RecipeFragment mRecipeFragment;
+
+        public FilterDialogFragment(Activity activity, RecipeFragment recipeFragment, Area area, Category category, Event event) {
             mActivity = activity;
             mArea = area;
             mCategory = category;
             mEvent = event;
+            mRecipeFragment = recipeFragment;
         }
 
 
@@ -166,6 +206,41 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
             mSpArea = view.findViewById(R.id.spArea);
             mSpCategory = view.findViewById(R.id.spCategory);
             mSpEvent = view.findViewById(R.id.spEvent);
+
+            mbtnAdd = view.findViewById(R.id.btnAdd);
+            mbtnAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSearch();
+                }
+            });
+
+            metKeyword = view.findViewById(R.id.etKeyword);
+        }
+
+        private void onSearch() {
+            String keyword = metKeyword.getText().toString();
+            Area area = null;
+            Category category = null;
+            Event event = null;
+
+            int areaPosition = mSpArea.getSelectedItemPosition();
+            if (areaPosition > 0) {
+                area = mAreas.get(areaPosition - 1);
+            }
+
+            int categoryPosition = mSpCategory.getSelectedItemPosition();
+            if (categoryPosition > 0) {
+                category = mCategories.get(categoryPosition - 1);
+            }
+
+            int eventPosition = mSpEvent.getSelectedItemPosition();
+            if (eventPosition > 0) {
+                event = mEvents.get(eventPosition - 1);
+            }
+
+            mRecipeFragment.onFilter(keyword, area, category, event);
+
         }
 
         public void getListAreas() {
@@ -183,6 +258,7 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         public void displayListAreas(List<Area> areas) {
             mAreas = areas;
             List<String> areaAsStrings = new ArrayList<>();
+            areaAsStrings.add("Chọn tất cả");
             for (Area area: areas ) {
                 areaAsStrings.add(area.getName());
             }
@@ -205,6 +281,7 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         public void displayListCategories(List<Category> categories) {
             mCategories = categories;
             List<String> categoryAsStrings = new ArrayList<>();
+            categoryAsStrings.add("Chọn tất cả");
             for (Category category: categories) {
                 categoryAsStrings.add(category.getName());
             }
@@ -227,6 +304,7 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
         public void displayListEvents(List<Event> events) {
             mEvents = events;
             List<String> eventAsStrings = new ArrayList<>();
+            eventAsStrings.add("Chọn tất cả");
             for (Event event: events) {
                 eventAsStrings.add(event.getName());
             }
