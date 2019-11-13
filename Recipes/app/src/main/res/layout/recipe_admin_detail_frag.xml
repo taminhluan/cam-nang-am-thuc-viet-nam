@@ -49,6 +49,7 @@
                     android:text="@string/kcal" />
                 <EditText
                     android:id="@+id/etKCal"
+                    android:inputType="numberDecimal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -63,6 +64,7 @@
                     android:text="@string/minsToCook" />
                 <EditText
                     android:id="@+id/etMinsToCook"
+                    android:inputType="numberDecimal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
