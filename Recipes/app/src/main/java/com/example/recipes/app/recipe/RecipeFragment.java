@@ -47,6 +47,7 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
     RecipesRecyclerViewAdapter mRecipesRecyclerViewAdapter;
     private List<Recipe> all;
     private List<Recipe> mFilteredRecipes;
+    private FilterDialogFragment mfilterDialogFragment;
 
     public RecipeFragment() {
         // Required empty public constructor
@@ -70,7 +71,7 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
     }
 
     private void onFilter(String keyword, Area area, Category category, Event event) {
-        mFilteredRecipes.clear();
+        List<Recipe> recipes  = new ArrayList<>();
         for (Recipe recipe: all) {
             boolean valid = true;
 
@@ -96,10 +97,15 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
             }
 
             if (valid) {
-                mFilteredRecipes.add(recipe);
+                recipes.add(recipe);
             }
         }
+
+        mFilteredRecipes.clear();
+        mFilteredRecipes.addAll(recipes);
         mRecipesRecyclerViewAdapter.notifyDataSetChanged();
+
+        mfilterDialogFragment.dismiss();
     }
 
     private void getDataFromIntent() {
@@ -128,7 +134,35 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
     @Override
     public void onDisplayList(List<Recipe> recipes) {
         all = recipes;
-        mFilteredRecipes = recipes;
+
+        mFilteredRecipes = new ArrayList<>();
+
+        for (Recipe recipe: all) {
+            boolean valid = true;
+
+            if (mArea != null) {
+                if (mArea.getUid() != recipe.getAreaId()) {
+                    valid = false;
+                }
+            }
+
+            if (mCategory != null) {
+                if (mCategory.getUid() != recipe.getCategoryId()) {
+                    valid = false;
+                }
+            }
+
+            if (mEvent != null) {
+                if (mEvent.getUid() != recipe.getEventId()) {
+                    valid = false;
+                }
+            }
+
+            if (valid) {
+                mFilteredRecipes.add(recipe);
+            }
+        }
+
         mRecipesRecyclerViewAdapter = new RecipesRecyclerViewAdapter(mFilteredRecipes, this);
         mRv.setAdapter(mRecipesRecyclerViewAdapter);
     }
@@ -142,9 +176,9 @@ public class RecipeFragment extends BaseFragment implements IRecipeFragment, Vie
 
     @Override
     public void openPopupFilter() {
-        FilterDialogFragment filterDialogFragment =  new FilterDialogFragment(getActivityNonNull(), this, mArea, mCategory, mEvent);
+        mfilterDialogFragment =  new FilterDialogFragment(getActivityNonNull(), this, mArea, mCategory, mEvent);
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        filterDialogFragment.show(ft, "dialog");
+        mfilterDialogFragment.show(ft, "dialog");
 
     }
 
