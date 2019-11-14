@@ -6,212 +6,219 @@
     tools:context=".app.recipe_detail.RecipeDetailFragment"
     android:orientation="vertical">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/ivRecipe"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:contentDescription="@string/image"
-            android:src="@drawable/recipe_placeholder"
-            android:scaleType="centerCrop"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnShare"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_menu_share"
-            android:tint="@color/white"
-            android:backgroundTint="@color/colorPrimaryDark"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:orientation="vertical">
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/ivRecipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:contentDescription="@string/image"
+                    android:src="@drawable/recipe_placeholder"
+                    android:scaleType="centerCrop"/>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <androidx.cardview.widget.CardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/cvIntro">
-
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@android:drawable/ic_menu_share"
+                    android:tint="@color/white"
+                    android:backgroundTint="@color/colorPrimaryDark"/>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:padding="16dp">
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/intro"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                        android:id="@+id/textView"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <LinearLayout
+                <androidx.cardview.widget.CardView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="16dp">
+                    android:id="@+id/cvIntro">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:layout_weight="1">
+                        android:layout_height="match_parent"
+                        android:padding="16dp">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/iv1"
-                            android:src="@drawable/ic_clock_gray" />
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/intro"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                                android:id="@+id/textView"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="20 min"
-                            android:id="@+id/tvMinsToCook"
-                            android:gravity="center" />
+                            android:orientation="horizontal"
+                            android:paddingTop="16dp">
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:layout_weight="1">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/iv1"
+                                    android:src="@drawable/ic_clock_gray" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="20 min"
+                                    android:id="@+id/tvMinsToCook"
+                                    android:gravity="center" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/iv2"
+                                    android:src="@drawable/ic_fire_grey600_24dp"
+                                    android:padding="4dp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="23443390 kcal"
+                                    android:id="@+id/tvKCal"
+                                    android:gravity="center" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:text="@string/placeholder_recipe_name"
+                                    android:layout_width="150sp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/tvRecipeName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:text="@string/placeholder_category_name"
+                                    android:layout_width="150sp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/tvCategoryName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:text="@string/placeholder_area_name"
+                                    android:layout_width="150sp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/tvAreaName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:text="@string/placeholder_event_name"
+                                    android:layout_width="150sp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/tvEventName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:text="@string/placeholder_ingredients"
+                                    android:layout_width="150sp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/tvIngredients"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:text="@string/placeholder_detail"
+                                    android:layout_width="150sp"
+                                    android:layout_height="wrap_content"/>
+                                <TextView
+                                    android:id="@+id/tvDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/iv2"
-                            android:src="@drawable/ic_fire_grey600_24dp"
-                            android:padding="4dp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="23443390 kcal"
-                            android:id="@+id/tvKCal"
-                            android:gravity="center" />
-                    </LinearLayout>
-                </LinearLayout>
-
+                </androidx.cardview.widget.CardView>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:text="@string/placeholder_recipe_name"
-                            android:layout_width="150sp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvRecipeName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:text="@string/placeholder_category_name"
-                            android:layout_width="150sp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvCategoryName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:text="@string/placeholder_area_name"
-                            android:layout_width="150sp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvAreaName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:text="@string/placeholder_event_name"
-                            android:layout_width="150sp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvEventName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:text="@string/placeholder_ingredients"
-                            android:layout_width="150sp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvIngredients"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:text="@string/placeholder_detail"
-                            android:layout_width="150sp"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:id="@+id/tvDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
 
                 </LinearLayout>
-
             </LinearLayout>
-
-
-
-        </androidx.cardview.widget.CardView>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-
         </LinearLayout>
-    </LinearLayout>
-
+    </ScrollView>
+    
 </LinearLayout>
