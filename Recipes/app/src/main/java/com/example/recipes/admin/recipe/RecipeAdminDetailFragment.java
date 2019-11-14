@@ -55,6 +55,9 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
     private EditText mEtMinsToCook;
     private EditText mEtKCal;
 
+    private EditText mEtIntegrates;
+    private EditText mEtDetails;
+
     private LinearLayout mLlUpdateGroupButtons;
     private LinearLayout mLlAddGroupButtons;
 
@@ -122,6 +125,9 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
 
         mIbAddImage = view.findViewById(R.id.ibAddImage);
         mIbAddImage.setOnClickListener(this);
+
+        mEtIntegrates = view.findViewById(R.id.etIntergrates);
+        mEtDetails = view.findViewById(R.id.etDetails);
     }
 
     private void initLayout() {
@@ -151,6 +157,9 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
 
         mEtName.setText(recipe.getName());
         mEtKCal.setText(String.valueOf(recipe.getKcal()));
+
+        mEtIntegrates.setText(recipe.getIngredients());
+        mEtDetails.setText(recipe.getDetail());
         mEtMinsToCook.setText(String.valueOf(recipe.getMinsToCook()));
 
         //TODO display category, event, area
@@ -278,6 +287,9 @@ public class RecipeAdminDetailFragment extends BaseFragment implements IRecipeAd
 
         mRecipe.setKcal(Double.valueOf(mEtKCal.getText().toString()));
         mRecipe.setMinsToCook(Integer.valueOf(mEtMinsToCook.getText().toString()));
+
+        mRecipe.setIngredients(mEtIntegrates.getText().toString());
+        mRecipe.setDetail(mEtDetails.getText().toString());
     }
 
     @Override

@@ -46,4 +46,6 @@
     <string name="filter">Lọc</string>
     <string name="keyword">Từ khóa</string>
     <string name="search">Tìm kiếm</string>
+    <string name="intergrates">Danh sách nguyên liệu</string>
+    <string name="details">Chi tiết</string>
 </resources>
