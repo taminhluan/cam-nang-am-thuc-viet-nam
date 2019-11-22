@@ -30,6 +30,9 @@ public interface RecipeDao {
     @Query("UPDATE recipe SET liked = 1 WHERE uid = :id")
     void bookmark(int id);
 
+    @Query("UPDATE recipe SET liked = 0 WHERE uid = :id")
+    void unbookmark(int id);
+
     @Delete
     void delete(Recipe recipe);
 }

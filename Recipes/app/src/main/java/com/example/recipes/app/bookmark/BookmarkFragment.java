@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
+import com.example.recipes.admin.recipe.IRecipeAdminDetailFragment;
 import com.example.recipes.app.recipe.RecipeFragment;
 import com.example.recipes.app.recipe_detail.RecipeDetailActivity;
 import com.example.recipes.constant.AppConstant;
@@ -72,8 +73,6 @@ public class BookmarkFragment extends BaseFragment implements IBookmarkFragment 
         mFilteredRecipes = new ArrayList<>();
 
         for (Recipe recipe: all) {
-
-
             if (recipe.isLiked()) {
                 mFilteredRecipes.add(recipe);
             }
@@ -159,8 +158,15 @@ public class BookmarkFragment extends BaseFragment implements IBookmarkFragment 
         protected List<Recipe> doInBackground(Void... voids) {
             AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
 
-            List<Recipe> all = db.getRecipeDao().getAll();
+            List<Recipe> all2 = db.getRecipeDao().getAll();
+            List<Recipe> recipes = new ArrayList<>();
+            for (Recipe recipe: all2) {
+                if (recipe.isLiked()) {
+                    recipes.add(recipe);
+                }
+            }
 
+            all = recipes;
             return all;
         }
 

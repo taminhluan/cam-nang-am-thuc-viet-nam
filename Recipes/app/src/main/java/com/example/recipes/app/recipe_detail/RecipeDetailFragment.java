@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
 import com.example.recipes.app.area.AreaActivity;
+import com.example.recipes.app.bookmark.IBookmarkFragment;
 import com.example.recipes.app.category.CategoryActivity;
 import com.example.recipes.app.category.ICategoryFragment;
 import com.example.recipes.app.event.EventActivity;
@@ -91,10 +92,22 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
         mTvKCal = view.findViewById(R.id.tvKCal);
 
         mbtnBookmark = view.findViewById(R.id.btnBookmark);
+        if (mRecipe.isLiked()) {
+            mbtnBookmark.setImageResource(R.drawable.ic_clear);
+        } else {
+            mbtnBookmark.setImageResource(R.drawable.baseline_bookmark_24);
+        }
+
         mbtnBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Da them vao bookmark", Toast.LENGTH_LONG).show();
+                if (mRecipe.isLiked()) {
+                    new UnBookmarkAsyncTask(RecipeDetailFragment.this).execute();
+                    Toast.makeText(getContext(), "Da xoa khoi bookmark", Toast.LENGTH_LONG).show();
+                } else {
+                    new BookmarkAsyncTask(RecipeDetailFragment.this).execute();
+                    Toast.makeText(getContext(), "Da them vao bookmark", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -210,6 +223,59 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
         protected void onPostExecute(Recipe recipe) {
             super.onPostExecute(recipe);
             mWeakReferenceFragment.get().onDisplayMoreInfo(recipe);
+        }
+    }
+
+
+    private class BookmarkAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<IRecipeDetailFragment> mWeakReferenceFragment;
+        public BookmarkAsyncTask(IRecipeDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
+
+            db.getRecipeDao().bookmark(mRecipe.getUid());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mRecipe.setLiked(true);
+            if (mRecipe.isLiked()) {
+                mbtnBookmark.setImageResource(R.drawable.ic_clear);
+            } else {
+                mbtnBookmark.setImageResource(R.drawable.baseline_bookmark_24);
+            }
+        }
+    }
+
+    private class UnBookmarkAsyncTask extends AsyncTask<Void, Void, Void> {
+        private WeakReference<IRecipeDetailFragment> mWeakReferenceFragment;
+        public UnBookmarkAsyncTask(IRecipeDetailFragment fragment) {
+            mWeakReferenceFragment = new WeakReference<>(fragment);
+        }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            AppDatabase db = AppDatabase.getInstance(getActivityNonNull());
+
+            db.getRecipeDao().unbookmark(mRecipe.getUid());
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mRecipe.setLiked(false);
+            if (mRecipe.isLiked()) {
+                mbtnBookmark.setImageResource(R.drawable.ic_clear);
+            } else {
+                mbtnBookmark.setImageResource(R.drawable.baseline_bookmark_24);
+            }
         }
     }
 }
