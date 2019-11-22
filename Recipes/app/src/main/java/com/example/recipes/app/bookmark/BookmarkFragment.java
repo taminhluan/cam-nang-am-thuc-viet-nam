@@ -43,6 +43,10 @@ public class BookmarkFragment extends BaseFragment implements IBookmarkFragment 
         // Required empty public constructor
     }
 
+    public static BookmarkFragment newInstance() {
+        return new BookmarkFragment();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

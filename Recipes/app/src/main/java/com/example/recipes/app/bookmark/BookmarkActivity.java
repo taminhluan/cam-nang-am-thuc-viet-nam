@@ -27,16 +27,16 @@ public class BookmarkActivity extends BaseActivity {
     private void setupToolbar() {
         // Load toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.recipe);
+        toolbar.setTitle("Cong thuc da thich");
         setSupportActionBar(toolbar);
     }
 
     private void setupFragment() {
-        AreaFragment fragment =
-                (AreaFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        BookmarkFragment fragment =
+                (BookmarkFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (fragment == null) {
             // Create the fragment
-            fragment = AreaFragment.newInstance();
+            fragment = BookmarkFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
