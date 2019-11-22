@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.recipes.BaseFragment;
 import com.example.recipes.R;
@@ -40,6 +41,7 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
     private TextView mTvMinsToCook;
 
     private FloatingActionButton mBtnShare;
+    private FloatingActionButton mbtnBookmark;
 
     public static RecipeDetailFragment getInstance() {
         return new RecipeDetailFragment();
@@ -87,6 +89,14 @@ public class RecipeDetailFragment extends BaseFragment implements IRecipeDetailF
 
         mTvMinsToCook = view.findViewById(R.id.tvMinsToCook);
         mTvKCal = view.findViewById(R.id.tvKCal);
+
+        mbtnBookmark = view.findViewById(R.id.btnBookmark);
+        mbtnBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Da them vao bookmark", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
