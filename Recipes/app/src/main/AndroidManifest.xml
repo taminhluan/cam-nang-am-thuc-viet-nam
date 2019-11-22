@@ -14,22 +14,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".app.bookmark.BookmarkActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
         <activity
             android:name=".admin.recipe.RecipeAdminDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".admin.event.EventAdminDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".admin.area.AreaAdminDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".admin.category.CategoryAdminDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.recipe.RecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,9 +71,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".app.main.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

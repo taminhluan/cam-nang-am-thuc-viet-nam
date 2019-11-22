@@ -27,6 +27,9 @@ public interface RecipeDao {
     @Update
     void updateAll(Recipe... recipes);
 
+    @Query("UPDATE recipe SET liked = 1 WHERE uid = :id")
+    void bookmark(int id);
+
     @Delete
     void delete(Recipe recipe);
 }

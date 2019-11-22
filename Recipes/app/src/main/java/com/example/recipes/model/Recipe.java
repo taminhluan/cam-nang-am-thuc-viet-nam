@@ -46,6 +46,8 @@ public class Recipe implements Serializable {
 
     private int categoryId;
 
+    private boolean liked;
+
     //fields obtain by code
     @Ignore
     private Area area;
@@ -159,5 +161,13 @@ public class Recipe implements Serializable {
 
     public void setMinsToCook(int minsToCook) {
         this.minsToCook = minsToCook;
+    }
+
+    public boolean isLiked() {
+        return liked;
+    }
+
+    public void setLiked(boolean liked) {
+        this.liked = liked;
     }
 }

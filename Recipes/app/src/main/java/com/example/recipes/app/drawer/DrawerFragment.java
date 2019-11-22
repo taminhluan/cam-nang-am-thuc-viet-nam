@@ -18,6 +18,7 @@ import com.example.recipes.R;
 import com.example.recipes.admin.dashboard.DashboardActivity;
 import com.example.recipes.app.about.AboutDialogFragment;
 import com.example.recipes.app.area.AreaActivity;
+import com.example.recipes.app.bookmark.BookmarkActivity;
 import com.example.recipes.app.category.CategoryActivity;
 import com.example.recipes.app.event.EventActivity;
 import com.example.recipes.app.main.MainActivity;
@@ -33,6 +34,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mMenuAbout;
     private LinearLayout mMenuHome;
     private LinearLayout mMenuAdmin;
+    private LinearLayout mMenuLiked;
 
     public DrawerFragment() {
         // Required empty public constructor
@@ -66,6 +68,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         mMenuAbout = view.findViewById(R.id.menuAbout);
         mMenuHome = view.findViewById(R.id.menuHome);
         mMenuAdmin = view.findViewById(R.id.menuAdmin);
+        mMenuLiked = view.findViewById(R.id.menuLiked);
 
         mMenuCategory.setOnClickListener(this);
         mMenuArea.setOnClickListener(this);
@@ -73,6 +76,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         mMenuAbout.setOnClickListener(this);
         mMenuHome.setOnClickListener(this);
         mMenuAdmin.setOnClickListener(this);
+        mMenuLiked.setOnClickListener(this);
     }
 
     public void setUpDrawer(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
@@ -114,6 +118,10 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.menuHome:
                 intent = new Intent(this.getActivity(), RecipeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.menuLiked:
+                intent = new Intent(this.getActivity(), BookmarkActivity.class);
                 startActivity(intent);
                 break;
             case R.id.menuCategory:
